@@ -64,6 +64,9 @@ hr{border:none;border-top:1px dashed var(--line);margin:2.4rem 0;}
 .vec{position:relative;display:inline-block;padding-top:.5em;}
 .vec::after{content:"→";position:absolute;top:-.05em;left:50%;
   transform:translateX(-50%) scale(.62);line-height:1;color:inherit;}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.95rem;}
+th,td{padding:.4rem .6rem;border:1px solid var(--line);text-align:left;vertical-align:top;}
+th{background:var(--panel);color:var(--accent2);}
 
 </style>
 </head>
@@ -71,13 +74,56 @@ hr{border:none;border-top:1px dashed var(--line);margin:2.4rem 0;}
 <div class="wrap">
 
 <h1>Rappels mathématiques pour l'électromagnétisme</h1>
-<p class="sub">Gradient · Circulation · Flux · Divergence · Rotationnel · Théorèmes de Green-Ostrogradsky et Stokes · Laplacien</p>
+<p class="sub">Systèmes de coordonnées · Gradient · Circulation · Flux · Divergence · Rotationnel · Théorèmes de Green-Ostrogradsky et Stokes · Laplacien</p>
 
-<h2>1. Le gradient d'une fonction scalaire M(x, y, z)</h2>
+<h2>1. Systèmes de coordonnées</h2>
+
+<h3>Coordonnées cartésiennes</h3>
+<p>Les vecteurs unitaires sont <span class="vec">e</span>x, <span class="vec">e</span>y, <span class="vec">e</span>z. Le déplacement élémentaire entre deux points voisins M et M′ est :</p>
+<div class="formula">d<span class="vec">l</span> = <span class="vec">MM′</span> = dx·<span class="vec">e</span>x + dy·<span class="vec">e</span>y + dz·<span class="vec">e</span>z</div>
+<div class="formula">Volume élémentaire : dτ = dx dy dz</div>
+<div class="formula">Surfaces élémentaires : dS₁ = dx dy &nbsp;&nbsp; dS₂ = dx dz &nbsp;&nbsp; dS₃ = dy dz</div>
+
+<h3>Coordonnées cylindriques</h3>
+<p>Les vecteurs unitaires sont <span class="vec">e</span>r, <span class="vec">e</span>θ, <span class="vec">e</span>z. Le déplacement élémentaire est :</p>
+<div class="formula">d<span class="vec">l</span> = dr·<span class="vec">e</span>r + r·dθ·<span class="vec">e</span>θ + dz·<span class="vec">e</span>z</div>
+<div class="formula">Volume élémentaire : dτ = dr·(r dθ)·dz = r dr dθ dz</div>
+<div class="formula">Surfaces élémentaires : dS<sub>⊥z</sub> = r dr dθ &nbsp;&nbsp; dS<sub>⊥r</sub> = r dθ dz</div>
+<div class="card">
+<span class="tag">Correction</span>
+<p>La surface perpendiculaire à l'axe z (celle qu'on "empile" selon z pour retrouver le volume) doit inclure le facteur r : dS = r·dr·dθ, et non simplement dr·dθ — sinon elle est incompatible avec dτ = r dr dθ dz.</p>
+</div>
+
+<h3>Coordonnées sphériques</h3>
+<p>Les vecteurs unitaires sont <span class="vec">e</span>r, <span class="vec">e</span>θ, <span class="vec">e</span>φ. Le déplacement élémentaire est :</p>
+<div class="formula">d<span class="vec">l</span> = dr·<span class="vec">e</span>r + r·dθ·<span class="vec">e</span>θ + r·sinθ·dφ·<span class="vec">e</span>φ</div>
+<div class="formula">Volume élémentaire : dτ = dr·(r dθ)·(r sinθ dφ) = r² sinθ dr dθ dφ</div>
+<div class="formula">Surface élémentaire (sur une sphère de rayon r) : dS = r² sinθ dθ dφ</div>
+<p class="note">Remarque : le vecteur position radial vérifie <span class="vec">r</span>/r = <span class="vec">e</span>r (vecteur unitaire radial) — c'est de là que vient l'identité div(<span class="vec">r</span>/r) = div(<span class="vec">e</span>r).</p>
+
+<h3>Passage entre coordonnées cartésiennes et polaires/cylindriques</h3>
+<div class="formula"><span class="vec">e</span>r = cosθ·<span class="vec">e</span>x + sinθ·<span class="vec">e</span>y &nbsp;&nbsp;&nbsp; <span class="vec">e</span>θ = −sinθ·<span class="vec">e</span>x + cosθ·<span class="vec">e</span>y</div>
+<div class="formula"><span class="vec">e</span>x = cosθ·<span class="vec">e</span>r − sinθ·<span class="vec">e</span>θ &nbsp;&nbsp;&nbsp; <span class="vec">e</span>y = sinθ·<span class="vec">e</span>r + cosθ·<span class="vec">e</span>θ</div>
+<p class="note">θ désigne ici l'angle polaire/azimutal (même rôle qu'en coordonnées cylindriques).</p>
+
+<hr>
+
+<h2>2. Le gradient d'une fonction scalaire M(x, y, z)</h2>
 <p>La différentielle dM mesure la variation d'une fonction scalaire M entre deux points infiniment proches :</p>
 <div class="formula">dM = (∂M/∂x)·dx + (∂M/∂y)·dy + (∂M/∂z)·dz</div>
 <p>En notant d<span class="vec">M</span> le vecteur déplacement (dx, dy, dz), cette somme est exactement un produit scalaire, ce qui permet de définir le gradient :</p>
 <div class="formula">dM = grad[M(x,y,z)] · d<span class="vec">M</span> &nbsp;&nbsp;avec&nbsp;&nbsp; grad[M] = (∂M/∂x, ∂M/∂y, ∂M/∂z)</div>
+
+<h3>Expression du gradient selon le système de coordonnées</h3>
+<table>
+<tr><th>Cartésiennes</th><th>Cylindriques</th><th>Sphériques</th></tr>
+<tr>
+<td>∂f/∂x ·<span class="vec">e</span>x<br>∂f/∂y ·<span class="vec">e</span>y<br>∂f/∂z ·<span class="vec">e</span>z</td>
+<td>∂f/∂r ·<span class="vec">e</span>r<br>(1/r)·∂f/∂θ ·<span class="vec">e</span>θ<br>∂f/∂z ·<span class="vec">e</span>z</td>
+<td>∂f/∂r ·<span class="vec">e</span>r<br>(1/r)·∂f/∂θ ·<span class="vec">e</span>θ<br>1/(r sinθ)·∂f/∂φ ·<span class="vec">e</span>φ</td>
+</tr>
+</table>
+<p class="note">Remarque : df = grad(f)·d<span class="vec">l</span> — c'est la même relation que dM = grad[M]·d<span class="vec">M</span> ci-dessus, écrite avec le déplacement élémentaire d<span class="vec">l</span> propre à chaque système de coordonnées (§1).</p>
 
 <h3>Signification géométrique</h3>
 <p>Si M est <strong>constante</strong> sur une surface (une équipotentielle), alors dM = 0 pour tout déplacement sur cette surface, donc grad[M]·d<span class="vec">M</span> = 0. Un produit scalaire nul entre deux vecteurs non nuls signifie qu'ils sont perpendiculaires.</p>
@@ -99,7 +145,7 @@ hr{border:none;border-top:1px dashed var(--line);margin:2.4rem 0;}
 
 <hr>
 
-<h2>2. Circulation d'un champ vectoriel et condition de "dériver d'un potentiel"</h2>
+<h2>3. Circulation d'un champ vectoriel et condition de "dériver d'un potentiel"</h2>
 <p>La circulation d'un champ <span class="vec">A</span> entre deux points le long d'un chemin est :</p>
 <div class="formula">C = ∫ <span class="vec">A</span> · d<span class="vec">l</span></div>
 <p>Un champ <span class="vec">A</span> <strong>dérive d'un potentiel</strong> si sa circulation entre deux points ne dépend pas du chemin suivi. Cela équivaut à dire que la circulation le long de <strong>tout contour fermé</strong> est nulle :</p>
@@ -117,7 +163,7 @@ hr{border:none;border-top:1px dashed var(--line);margin:2.4rem 0;}
 <h3>Définition du rotationnel</h3>
 <p>Plus généralement, pour un champ <span class="vec">A</span>(X, Y, Z) quelconque (pas nécessairement irrotationnel), le rotationnel est le champ de vecteurs défini par :</p>
 <div class="formula">rot(<span class="vec">A</span>) = <span class="vec">∇</span> ∧ <span class="vec">A</span> = ( ∂Z/∂y − ∂Y/∂z ,&nbsp; ∂X/∂z − ∂Z/∂x ,&nbsp; ∂Y/∂x − ∂X/∂y )</div>
-<p class="note">C'est cette définition générale (et non seulement le cas particulier rot(<span class="vec">A</span>)=<span class="vec">0</span> vu ci-dessus) qui intervient dans le théorème de Stokes (§4) et dans les propriétés du rotationnel (§5).</p>
+<p class="note">C'est cette définition générale (et non seulement le cas particulier rot(<span class="vec">A</span>)=<span class="vec">0</span> vu ci-dessus) qui intervient dans le théorème de Stokes (§5) et dans les propriétés du rotationnel (§6).</p>
 
 <div class="card">
 <span class="tag">D'où viennent ces égalités ?</span>
@@ -128,12 +174,20 @@ hr{border:none;border-top:1px dashed var(--line);margin:2.4rem 0;}
 
 <hr>
 
-<h2>3. Flux et divergence</h2>
+<h2>4. Flux et divergence</h2>
 <p>Le flux d'un champ <span class="vec">A</span> à travers une surface élémentaire d<span class="vec">S</span> est :</p>
 <div class="formula">dΦ = <span class="vec">A</span> · d<span class="vec">S</span> = X·dSx + Y·dSy + Z·dSz</div>
 <p>En notant <span class="vec">n</span>(α, β, γ) le vecteur unitaire normal à la surface (α, β, γ étant ses cosinus directeurs), on a d<span class="vec">S</span> = dS·<span class="vec">n</span>, donc dSx = α·dS, dSy = β·dS, dSz = γ·dS, et :</p>
 <div class="formula">dΦ = (α·X + β·Y + γ·Z)·dS = X·dydz + Y·dzdx + Z·dxdy</div>
 <p>Le flux total à travers une surface S s'écrit alors Φ = ∬(X·dydz + Y·dzdx + Z·dxdy).</p>
+
+<h3>Cas d'un champ uniforme sur une surface plane</h3>
+<p>Si <span class="vec">A</span> est uniforme et S une surface plane, le flux se réduit à un simple produit scalaire :</p>
+<div class="formula">Φ = <span class="vec">A</span>·<span class="vec">S</span> = A·S·cos α</div>
+<p>où α est l'angle entre <span class="vec">A</span> et la normale <span class="vec">n</span> à la surface, d'où :</p>
+<div class="formula">Φ<sub>max</sub> = A·S &nbsp;(α = 0, <span class="vec">A</span> ∥ <span class="vec">n</span>) &nbsp;&nbsp;&nbsp; Φ<sub>min</sub> = 0 &nbsp;(α = ±π/2, <span class="vec">A</span> ⊥ <span class="vec">n</span>)</div>
+<p class="note">Convention : pour une surface fermée, le vecteur normal <span class="vec">n</span> est toujours orienté de la surface vers l'extérieur.</p>
+
 <p>Pour construire la divergence "à la main", on calcule le flux net sortant d'un petit parallélépipède (cube PQRS...P'Q'R'S') de côtés dx, dy, dz : sur chaque paire de faces opposées, le flux sortant est la différence de la composante normale entre les deux faces, soit ∂(composante)/∂(direction)·dx dy dz.</p>
 
 <div class="svgwrap">
@@ -173,7 +227,7 @@ Sur la face opposée P′Q′R′S′ (normale sortante +x̂) : dΦ₂ = +X(x+dx
 
 <hr>
 
-<h2>4. Les deux grands théorèmes</h2>
+<h2>5. Les deux grands théorèmes</h2>
 
 <h3>Théorème de Green-Ostrogradsky (théorème de la divergence)</h3>
 <p>Il relie le flux à travers une surface <strong>fermée</strong> à l'intégrale de la divergence sur le volume qu'elle enferme :</p>
@@ -219,8 +273,13 @@ somme ≈ +(∂Y/∂x)·dx dy
 
 <hr>
 
-<h2>5. Propriétés du rotationnel</h2>
-<p class="note">Rappel (§2) : rot(<span class="vec">A</span>) = <span class="vec">∇</span> ∧ <span class="vec">A</span> = ( ∂Z/∂y − ∂Y/∂z, &nbsp;∂X/∂z − ∂Z/∂x, &nbsp;∂Y/∂x − ∂X/∂y ).</p>
+<h2>6. Propriétés du rotationnel</h2>
+<p class="note">Rappel (§3) : rot(<span class="vec">A</span>) = <span class="vec">∇</span> ∧ <span class="vec">A</span> = ( ∂Z/∂y − ∂Y/∂z, &nbsp;∂X/∂z − ∂Z/∂x, &nbsp;∂Y/∂x − ∂X/∂y ).</p>
+
+<h3>Expression du rotationnel en coordonnées curvilignes</h3>
+<div class="formula">Cylindriques : rot(<span class="vec">A</span>) = (1/r·∂Az/∂θ − ∂Aθ/∂z)·<span class="vec">e</span>r + (∂Ar/∂z − ∂Az/∂r)·<span class="vec">e</span>θ + (1/r)·[∂(r·Aθ)/∂r − ∂Ar/∂θ]·<span class="vec">e</span>z</div>
+<div class="formula">Sphériques : rot(<span class="vec">A</span>) = 1/(r sinθ)·[∂(Aφ sinθ)/∂θ − ∂Aθ/∂φ]·<span class="vec">e</span>r + (1/r)·[1/sinθ·∂Ar/∂φ − ∂(r·Aφ)/∂r]·<span class="vec">e</span>θ + (1/r)·[∂(r·Aθ)/∂r − ∂Ar/∂θ]·<span class="vec">e</span>φ</div>
+
 <div class="card">
 <span class="tag">Identité 1</span>
 <p><strong>div(rot(<span class="vec">B</span>)) = 0</strong> toujours — la divergence d'un rotationnel est identiquement nulle.</p>
@@ -241,10 +300,11 @@ somme ≈ +(∂Y/∂x)·dx dy
 <p>Ce potentiel vecteur n'est pas unique : si <span class="vec">A</span>₀ convient, alors <span class="vec">A</span> = <span class="vec">A</span>₀ + grad(f) convient aussi, quelle que soit la fonction scalaire f, puisque :</p>
 <div class="formula">rot(<span class="vec">A</span>) = rot(<span class="vec">A</span>₀) + rot(grad(f)) = rot(<span class="vec">A</span>₀) + <span class="vec">0</span> = <span class="vec">B</span></div>
 <p class="note">Le potentiel vecteur n'est donc défini qu'à un gradient près : c'est cette liberté de "jauge" qui permet, par exemple, d'imposer une condition supplémentaire comme div(<span class="vec">A</span>) = 0 (jauge de Coulomb).</p>
+<p class="note"><strong>En résumé</strong> : un champ <span class="vec">U</span> est "un rotationnel" (d'un autre champ) si et seulement si div(<span class="vec">U</span>) = 0 <em>et</em> il existe <span class="vec">V</span> tel que <span class="vec">U</span> = rot(<span class="vec">V</span>).</p>
 
 <hr>
 
-<h2>6. Laplacien et opérateur nabla</h2>
+<h2>7. Laplacien et opérateur nabla</h2>
 <p>Le Laplacien scalaire d'une fonction M :</p>
 <div class="formula">ΔM = ∂²M/∂x² + ∂²M/∂y² + ∂²M/∂z² = div(grad(M))</div>
 <p>Le Laplacien vectoriel d'un champ <span class="vec">A</span> :</p>
