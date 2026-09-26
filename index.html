@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rappels mathématiques — Électromagnétisme</title>
+<style>
+:root{
+  --bg:#faf9f7; --panel:#ffffff; --ink:#1f2430; --sub:#5b6270;
+  --accent:#8b2f2f; --accent2:#2f5a8b; --line:#e2ddd3;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#181a20; --panel:#20232b; --ink:#eceef1; --sub:#a4abb8;
+    --accent:#e0857b; --accent2:#7fb0e8; --line:#333844;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#181a20; --panel:#20232b; --ink:#eceef1; --sub:#a4abb8;
+  --accent:#e0857b; --accent2:#7fb0e8; --line:#333844;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:Georgia,'Times New Roman',serif;
+  line-height:1.55;
+}
+.wrap{max-width:760px;margin:0 auto;padding:2.2rem 1.3rem 4rem;}
+h1{font-size:1.7rem;margin:0 0 .2rem;color:var(--accent);}
+.sub{color:var(--sub);font-size:.95rem;margin-bottom:2rem;}
+h2{
+  font-size:1.2rem;color:var(--accent2);border-bottom:2px solid var(--line);
+  padding-bottom:.3rem;margin-top:2.6rem;
+}
+h3{font-size:1.02rem;color:var(--accent);margin-top:1.3rem;}
+p{margin:.6rem 0;}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:1rem 1.1rem;margin:1rem 0;
+}
+.formula{
+  font-family:'Cambria Math',Georgia,serif; font-size:1.05rem;
+  background:var(--panel); border-left:3px solid var(--accent2);
+  padding:.6rem .9rem; margin:.7rem 0; overflow-x:auto;
+}
+.svgwrap{
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:.6rem; margin:.9rem 0; overflow-x:auto;
+}
+svg{display:block;margin:0 auto;max-width:100%;height:auto;}
+.note{color:var(--sub);font-size:.9rem;font-style:italic;}
+.tag{
+  display:inline-block;background:var(--accent2);color:#fff;font-size:.72rem;
+  border-radius:5px;padding:.1rem .5rem;margin-bottom:.5rem;letter-spacing:.03em;
+}
+ul{padding-left:1.3rem;}
+li{margin:.3rem 0;}
+hr{border:none;border-top:1px dashed var(--line);margin:2.4rem 0;}
+.foot{color:var(--sub);font-size:.85rem;text-align:center;margin-top:3rem;}
+.vec{position:relative;display:inline-block;padding-top:.5em;}
+.vec::after{content:"→";position:absolute;top:-.05em;left:50%;
+  transform:translateX(-50%) scale(.62);line-height:1;color:inherit;}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Rappels mathématiques pour l'électromagnétisme</h1>
+<p class="sub">Gradient · Circulation · Flux · Divergence · Rotationnel · Théorèmes de Green-Ostrogradsky et Stokes · Laplacien</p>
+
+<h2>1. Le gradient d'une fonction scalaire M(x, y, z)</h2>
+<p>La différentielle dM mesure la variation d'une fonction scalaire M entre deux points infiniment proches :</p>
+<div class="formula">dM = (∂M/∂x)·dx + (∂M/∂y)·dy + (∂M/∂z)·dz</div>
+<p>En notant d<span class="vec">M</span> le vecteur déplacement (dx, dy, dz), cette somme est exactement un produit scalaire, ce qui permet de définir le gradient :</p>
+<div class="formula">dM = grad[M(x,y,z)] · d<span class="vec">M</span> &nbsp;&nbsp;avec&nbsp;&nbsp; grad[M] = (∂M/∂x, ∂M/∂y, ∂M/∂z)</div>
+
+<h3>Signification géométrique</h3>
+<p>Si M est <strong>constante</strong> sur une surface (une équipotentielle), alors dM = 0 pour tout déplacement sur cette surface, donc grad[M]·d<span class="vec">M</span> = 0. Un produit scalaire nul entre deux vecteurs non nuls signifie qu'ils sont perpendiculaires.</p>
+
+<div class="svgwrap">
+<svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="220" cy="140" rx="150" ry="70" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <ellipse cx="220" cy="140" rx="95" ry="44" fill="none" stroke="var(--accent2)" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <circle cx="270" cy="120" r="4" fill="var(--ink)"/>
+  <text x="278" y="115" font-size="14" fill="var(--ink)">M</text>
+  <line x1="270" y1="120" x2="270" y2="55" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#arr)"/>
+  <text x="278" y="65" font-size="14" fill="var(--accent)">grad[M]</text>
+  <text x="60" y="235" font-size="13" fill="var(--sub)">surfaces M(x,y,z) = constante</text>
+  <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 z" fill="var(--accent)"/></marker></defs>
+</svg>
+</div>
+<p class="note">Le gradient est toujours perpendiculaire à la surface de niveau (équipotentielle) au point considéré, et pointe vers les valeurs croissantes de M. C'est pourquoi <span class="vec">E</span> = −grad(V) est toujours perpendiculaire aux surfaces équipotentielles.</p>
+
+<hr>
+
+<h2>2. Circulation d'un champ vectoriel et condition de "dériver d'un potentiel"</h2>
+<p>La circulation d'un champ <span class="vec">A</span> entre deux points le long d'un chemin est :</p>
+<div class="formula">C = ∫ <span class="vec">A</span> · d<span class="vec">l</span></div>
+<p>Un champ <span class="vec">A</span> <strong>dérive d'un potentiel</strong> si sa circulation entre deux points ne dépend pas du chemin suivi. Cela équivaut à dire que la circulation le long de <strong>tout contour fermé</strong> est nulle :</p>
+<div class="formula">∮ <span class="vec">A</span> · d<span class="vec">l</span> = 0</div>
+
+<h3>Condition pour qu'un champ de vecteur soit un gradient</h3>
+<p>Supposons que <span class="vec">A</span>(X, Y, Z) dérive effectivement d'une fonction scalaire M(x,y,z), c'est-à-dire <span class="vec">A</span> = grad[M(x,y,z)] :</p>
+<div class="formula">X(x,y,z) = ∂M/∂x &nbsp;&nbsp;&nbsp; Y(x,y,z) = ∂M/∂y &nbsp;&nbsp;&nbsp; Z(x,y,z) = ∂M/∂z</div>
+<p>En écrivant cette condition composante par composante, on obtient des égalités de dérivées croisées :</p>
+<div class="formula">∂X/∂y = ∂Y/∂x &nbsp;&nbsp; ∂Y/∂z = ∂Z/∂y &nbsp;&nbsp; ∂Z/∂x = ∂X/∂z</div>
+<p>Ce sont exactement les conditions qui garantissent que la forme différentielle <span class="vec">A</span>·d<span class="vec">l</span> est <strong>exacte</strong> (donc qu'elle dérive d'un potentiel). Ces trois égalités se résument en une seule condition vectorielle, nécessaire <strong>et suffisante</strong> :</p>
+<div class="formula">rot(<span class="vec">A</span>) = <span class="vec">0</span></div>
+<p class="note">Un champ dont le rotationnel est nul est dit <em>irrotationnel</em> et dérive toujours d'un potentiel scalaire.</p>
+
+<h3>Définition du rotationnel</h3>
+<p>Plus généralement, pour un champ <span class="vec">A</span>(X, Y, Z) quelconque (pas nécessairement irrotationnel), le rotationnel est le champ de vecteurs défini par :</p>
+<div class="formula">rot(<span class="vec">A</span>) = <span class="vec">∇</span> ∧ <span class="vec">A</span> = ( ∂Z/∂y − ∂Y/∂z ,&nbsp; ∂X/∂z − ∂Z/∂x ,&nbsp; ∂Y/∂x − ∂X/∂y )</div>
+<p class="note">C'est cette définition générale (et non seulement le cas particulier rot(<span class="vec">A</span>)=<span class="vec">0</span> vu ci-dessus) qui intervient dans le théorème de Stokes (§4) et dans les propriétés du rotationnel (§5).</p>
+
+<div class="card">
+<span class="tag">D'où viennent ces égalités ?</span>
+<p>Si <span class="vec">A</span> dérive bien d'un potentiel M, alors X = ∂M/∂x et Y = ∂M/∂y. En dérivant une seconde fois :</p>
+<div class="formula">∂X/∂y = ∂²M/∂x∂y &nbsp;&nbsp;&nbsp; ∂Y/∂x = ∂²M/∂y∂x</div>
+<p>Or, d'après le <strong>théorème de Schwarz</strong> (dérivées croisées d'une fonction suffisamment régulière), ∂²M/∂x∂y = ∂²M/∂y∂x. On en déduit ∂X/∂y = ∂Y/∂x, et de même pour les deux autres paires — d'où les trois conditions.</p>
+</div>
+
+<hr>
+
+<h2>3. Flux et divergence</h2>
+<p>Le flux d'un champ <span class="vec">A</span> à travers une surface élémentaire d<span class="vec">S</span> est :</p>
+<div class="formula">dΦ = <span class="vec">A</span> · d<span class="vec">S</span> = X·dSx + Y·dSy + Z·dSz</div>
+<p>En notant <span class="vec">n</span>(α, β, γ) le vecteur unitaire normal à la surface (α, β, γ étant ses cosinus directeurs), on a d<span class="vec">S</span> = dS·<span class="vec">n</span>, donc dSx = α·dS, dSy = β·dS, dSz = γ·dS, et :</p>
+<div class="formula">dΦ = (α·X + β·Y + γ·Z)·dS = X·dydz + Y·dzdx + Z·dxdy</div>
+<p>Le flux total à travers une surface S s'écrit alors Φ = ∬(X·dydz + Y·dzdx + Z·dxdy).</p>
+<p>Pour construire la divergence "à la main", on calcule le flux net sortant d'un petit parallélépipède (cube PQRS...P'Q'R'S') de côtés dx, dy, dz : sur chaque paire de faces opposées, le flux sortant est la différence de la composante normale entre les deux faces, soit ∂(composante)/∂(direction)·dx dy dz.</p>
+
+<div class="svgwrap">
+<svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- simple parallelepiped -->
+  <polygon points="150,220 150,120 280,120 280,220" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <polygon points="150,120 195,90 325,90 280,120" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <polygon points="280,120 325,90 325,190 280,220" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <line x1="150" y1="220" x2="195" y2="190" stroke="var(--accent2)" stroke-width="1.4" stroke-dasharray="3 2"/>
+  <line x1="195" y1="190" x2="325" y2="190" stroke="var(--accent2)" stroke-width="1.4" stroke-dasharray="3 2"/>
+  <line x1="195" y1="190" x2="195" y2="90" stroke="var(--accent2)" stroke-width="1.4" stroke-dasharray="3 2"/>
+  <!-- flux arrows -->
+  <line x1="215" y1="170" x2="255" y2="170" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a2)"/>
+  <line x1="90" y1="170" x2="150" y2="170" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a2)"/>
+  <text x="60" y="163" font-size="13" fill="var(--accent)">A→(x)</text>
+  <text x="260" y="163" font-size="13" fill="var(--accent)">A→(x+dx)</text>
+  <text x="175" y="255" font-size="13" fill="var(--sub)">dx</text>
+  <text x="130" y="205" font-size="13" fill="var(--sub)">dy</text>
+  <text x="330" y="150" font-size="13" fill="var(--sub)">dz</text>
+  <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 z" fill="var(--accent)"/></marker></defs>
+</svg>
+</div>
+<div class="card">
+<span class="tag">Détail du calcul, face par face</span>
+<p>Sur la face PQRS (normale sortante −x̂, aire dy·dz) : dΦ₁ = −X(x,y,z)·dy·dz.<br>
+Sur la face opposée P′Q′R′S′ (normale sortante +x̂) : dΦ₂ = +X(x+dx,y,z)·dy·dz.</p>
+<div class="formula">dΦ₁ + dΦ₂ = [X(x+dx,y,z) − X(x,y,z)]·dydz ≈ (∂X/∂x)·dx dy dz</div>
+<p>Même raisonnement sur la paire de faces PQQ′P′ / SRR′S′ (normales ±ŷ) et sur la paire PSS′P′ / QRR′Q′ (normales ±ẑ) :</p>
+<div class="formula">(∂Y/∂y)·dx dy dz &nbsp;&nbsp;&nbsp; et &nbsp;&nbsp;&nbsp; (∂Z/∂z)·dx dy dz</div>
+<p>Le flux total sortant du parallélépipède est la somme des trois contributions :</p>
+<div class="formula">dΦ<sub>total</sub> = (∂X/∂x + ∂Y/∂y + ∂Z/∂z)·dx dy dz</div>
+</div>
+<p>En divisant le flux net par le volume dx dy dz et en passant à la limite, on obtient la divergence :</p>
+<div class="formula">div(<span class="vec">A</span>) = ∂X/∂x + ∂Y/∂y + ∂Z/∂z</div>
+<p class="note">div(<span class="vec">A</span>) mesure, en un point, la tendance du champ à "diverger" (source) ou "converger" (puits) localement.</p>
+
+<hr>
+
+<h2>4. Les deux grands théorèmes</h2>
+
+<h3>Théorème de Green-Ostrogradsky (théorème de la divergence)</h3>
+<p>Il relie le flux à travers une surface <strong>fermée</strong> à l'intégrale de la divergence sur le volume qu'elle enferme :</p>
+<div class="formula">∯ <span class="vec">A</span> · d<span class="vec">S</span> = ∭ div(<span class="vec">A</span>) dV</div>
+
+<h3>Théorème de Stokes</h3>
+<p>Il relie la circulation le long d'un contour <strong>fermé</strong> au flux du rotationnel à travers une surface quelconque s'appuyant sur ce contour :</p>
+<div class="formula">∮ <span class="vec">A</span> · d<span class="vec">l</span> = ∬ rot(<span class="vec">A</span>) · d<span class="vec">S</span></div>
+
+<div class="svgwrap">
+<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+  <!-- closed surface (left) -->
+  <ellipse cx="150" cy="110" rx="100" ry="70" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <line x1="150" y1="110" x2="150" y2="40" stroke="var(--accent)" stroke-width="2" marker-end="url(#a3)"/>
+  <text x="155" y="55" font-size="13" fill="var(--accent)">dS→</text>
+  <text x="80" y="205" font-size="13" fill="var(--sub)">surface fermée → volume V</text>
+  <!-- closed contour (right) -->
+  <path d="M 420 70 C 380 90, 380 150, 420 165 C 460 180, 500 150, 500 110 C 500 80, 470 55, 420 70" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <line x1="450" y1="110" x2="450" y2="60" stroke="var(--accent)" stroke-width="2" marker-end="url(#a3)"/>
+  <text x="455" y="70" font-size="13" fill="var(--accent)">dS→</text>
+  <text x="390" y="205" font-size="13" fill="var(--sub)">contour fermé → surface S</text>
+  <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 z" fill="var(--accent)"/></marker></defs>
+</svg>
+</div>
+<p class="note">Ces théorèmes permettent de passer d'une équation "intégrale" (sur un bord) à une équation "locale" (différentielle) — c'est exactement ainsi qu'on obtient les équations de Maxwell sous forme locale à partir de leur forme intégrale.</p>
+
+<div class="card">
+<span class="tag">D'où vient le théorème de Stokes ?</span>
+<p>On calcule la circulation de <span class="vec">A</span> sur un petit contour rectangulaire élémentaire PQRSP, de côtés dx et dy, situé dans le plan (x,y) :</p>
+<div class="formula">
+sur PQ (y = y₀) : X(x,y₀)·dx &nbsp;&nbsp; sur RS (y = y₀+dy, parcouru en sens inverse) : −X(x,y₀+dy)·dx<br>
+somme ≈ −(∂X/∂y)·dx dy
+</div>
+<div class="formula">
+sur QR (x = x₀+dx) : Y(x₀+dx,y)·dy &nbsp;&nbsp; sur SP (x = x₀, sens inverse) : −Y(x₀,y)·dy<br>
+somme ≈ +(∂Y/∂x)·dx dy
+</div>
+<p>La circulation totale le long de PQRSP vaut donc :</p>
+<div class="formula">∮<sub>PQRSP</sub> <span class="vec">A</span>·d<span class="vec">l</span> = (∂Y/∂x − ∂X/∂y)·dx dy = rot<sub>z</sub>(<span class="vec">A</span>)·dS</div>
+<p>En pavant une surface S quelconque par de tels rectangles élémentaires, les circulations sur les arêtes internes s'annulent deux à deux (parcourues en sens opposés), et il ne reste que la circulation sur le contour extérieur : on retrouve ∮<span class="vec">A</span>·d<span class="vec">l</span> = ∬rot(<span class="vec">A</span>)·d<span class="vec">S</span>.</p>
+</div>
+
+<hr>
+
+<h2>5. Propriétés du rotationnel</h2>
+<p class="note">Rappel (§2) : rot(<span class="vec">A</span>) = <span class="vec">∇</span> ∧ <span class="vec">A</span> = ( ∂Z/∂y − ∂Y/∂z, &nbsp;∂X/∂z − ∂Z/∂x, &nbsp;∂Y/∂x − ∂X/∂y ).</p>
+<div class="card">
+<span class="tag">Identité 1</span>
+<p><strong>div(rot(<span class="vec">B</span>)) = 0</strong> toujours — la divergence d'un rotationnel est identiquement nulle.</p>
+<p class="note">Preuve : div(rot <span class="vec">B</span>) = ∂/∂x(∂Bz/∂y−∂By/∂z) + ∂/∂y(∂Bx/∂z−∂Bz/∂x) + ∂/∂z(∂By/∂x−∂Bx/∂y). En développant, chaque dérivée seconde croisée apparaît deux fois avec un signe opposé (ex. +∂²Bz/∂x∂y puis −∂²Bz/∂y∂x, égales par Schwarz) : tous les termes s'annulent deux à deux, d'où le résultat.</p>
+<span class="tag">Identité 2</span>
+<p><strong>rot(grad(M)) = <span class="vec">0</span></strong> toujours — le rotationnel d'un gradient est identiquement nul.</p>
+</div>
+<p class="note">Conséquence pratique : "rotationnel nul ⇒ le champ dérive d'un potentiel scalaire" et "divergence nulle ⇒ le champ peut s'écrire comme un rotationnel d'un autre champ". C'est ce deuxième point qui justifie l'écriture <span class="vec">B</span> = rot(<span class="vec">A</span>), où <span class="vec">A</span> est le potentiel vecteur, puisque div(<span class="vec">B</span>) = 0 en magnétostatique.</p>
+
+<h3>Caractère conservatif du flux</h3>
+<p>Soient S₁ et S₂ deux surfaces différentes s'appuyant sur le même contour fermé C. Leur réunion (S₁ ∪ −S₂) forme une surface fermée délimitant un volume V, donc d'après Green-Ostrogradsky :</p>
+<div class="formula">Φ(S₁) − Φ(S₂) = ∯ <span class="vec">B</span>·d<span class="vec">S</span> = ∭<sub>V</sub> div(<span class="vec">B</span>) dV</div>
+<p>Donc le flux de <span class="vec">B</span> est <strong>conservatif</strong> (indépendant de la surface choisie, pour un même contour) si et seulement si div(<span class="vec">B</span>) = 0 :</p>
+<div class="formula">div(<span class="vec">B</span>) = 0 &nbsp;⟺&nbsp; Φ(S₁) = Φ(S₂) &nbsp;∀ S₁, S₂ s'appuyant sur le même contour C</div>
+
+<h3>Existence et non-unicité du potentiel vecteur</h3>
+<div class="formula">div(<span class="vec">B</span>) = 0 &nbsp;⟺&nbsp; il existe <span class="vec">A</span>₀ tel que <span class="vec">B</span> = rot(<span class="vec">A</span>₀)</div>
+<p>Ce potentiel vecteur n'est pas unique : si <span class="vec">A</span>₀ convient, alors <span class="vec">A</span> = <span class="vec">A</span>₀ + grad(f) convient aussi, quelle que soit la fonction scalaire f, puisque :</p>
+<div class="formula">rot(<span class="vec">A</span>) = rot(<span class="vec">A</span>₀) + rot(grad(f)) = rot(<span class="vec">A</span>₀) + <span class="vec">0</span> = <span class="vec">B</span></div>
+<p class="note">Le potentiel vecteur n'est donc défini qu'à un gradient près : c'est cette liberté de "jauge" qui permet, par exemple, d'imposer une condition supplémentaire comme div(<span class="vec">A</span>) = 0 (jauge de Coulomb).</p>
+
+<hr>
+
+<h2>6. Laplacien et opérateur nabla</h2>
+<p>Le Laplacien scalaire d'une fonction M :</p>
+<div class="formula">ΔM = ∂²M/∂x² + ∂²M/∂y² + ∂²M/∂z² = div(grad(M))</div>
+<p>Le Laplacien vectoriel d'un champ <span class="vec">A</span> :</p>
+<div class="formula">Δ<span class="vec">A</span> = grad(div(<span class="vec">A</span>)) − rot(rot(<span class="vec">A</span>))</div>
+<p class="note">Cette dernière identité est celle qui, appliquée aux équations de Maxwell, permet de retrouver l'équation de propagation des ondes électromagnétiques.</p>
+
+<div class="card">
+<span class="tag">Vérification composante par composante</span>
+<p>Sur la composante en x, avec rot<sub>z</sub>(<span class="vec">A</span>) = ∂Y/∂x−∂X/∂y et rot<sub>y</sub>(<span class="vec">A</span>) = ∂X/∂z−∂Z/∂x :</p>
+<div class="formula">[rot(rot <span class="vec">A</span>)]<sub>x</sub> = ∂/∂y(∂Y/∂x−∂X/∂y) − ∂/∂z(∂X/∂z−∂Z/∂x)</div>
+<p>En ajoutant et retranchant ∂²X/∂x², ce terme se réorganise en :</p>
+<div class="formula">[rot(rot <span class="vec">A</span>)]<sub>x</sub> = ∂/∂x(∂X/∂x+∂Y/∂y+∂Z/∂z) − (∂²X/∂x²+∂²X/∂y²+∂²X/∂z²) = [grad(div <span class="vec">A</span>)]<sub>x</sub> − ΔX</div>
+<p>Ce qui redonne bien, composante par composante, Δ<span class="vec">A</span> = grad(div <span class="vec">A</span>) − rot(rot <span class="vec">A</span>) — une identité toujours vraie, quel que soit le champ <span class="vec">A</span>.</p>
+</div>
+
+<h3>Récapitulatif avec l'opérateur <span class="vec">∇</span></h3>
+<p><span class="vec">∇</span> = (∂/∂x, ∂/∂y, ∂/∂z) est une notation compacte :</p>
+<div class="formula">grad(M) = <span class="vec">∇</span>M &nbsp;&nbsp; div(<span class="vec">A</span>) = <span class="vec">∇</span>·<span class="vec">A</span> &nbsp;&nbsp; rot(<span class="vec">A</span>) = <span class="vec">∇</span>∧<span class="vec">A</span> &nbsp;&nbsp; ΔM = <span class="vec">∇</span>·<span class="vec">∇</span>M = ∇²M</div>
+
+<div class="foot">Document généré à partir de vos notes de cours — électromagnétisme, STIC.</div>
+</div>
+</body>
+</html>
