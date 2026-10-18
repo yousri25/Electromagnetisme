@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Électromagnétisme — Rappels mathématiques et électrostatique</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#1e2a44;--mut:#5b6788;--line:#dde1ee;--d1:#f5a142;--d2:#4fc98a;--d3:#1fa4f2;--d4:#ec4a8f;--d5:#5b49a8;--hl:#fff3b0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--bg:#12182a;--card:#1b2340;--ink:#e8ecf8;--mut:#9aa6c8;--line:#2d3760;--hl:#4a4310}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12182a;--card:#1b2340;--ink:#e8ecf8;--mut:#9aa6c8;--line:#2d3760;--hl:#4a4310}}
+html{scroll-padding-top:calc(60px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Nunito,system-ui,sans-serif}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:8px 12px;align-items:center}
+nav a{white-space:nowrap;color:var(--ink);text-decoration:none;padding:6px 12px;border-radius:99px;font-weight:600;font-size:14px}
+nav a:hover,nav a:focus-visible{background:var(--line);outline:none}
+nav button{margin-left:auto;border:1px solid var(--line);background:none;color:var(--ink);border-radius:99px;padding:5px 12px;cursor:pointer;font:inherit;font-size:14px}
+header{padding:48px 20px 28px;max-width:900px;margin:auto}
+h1{font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;margin:0 0 12px;font-weight:800}
+header p{color:var(--mut);max-width:60ch;margin:0}
+.bar{display:flex;height:10px;border-radius:5px;overflow:hidden;margin-top:22px}.bar i{flex:1}
+main{max-width:900px;margin:auto;padding:0 20px 80px}
+section{margin-top:56px}
+h2{font-size:1.7rem;margin:0 0 10px;padding-left:14px;border-left:8px solid var(--c,var(--d3))}
+h3{margin:18px 0 8px;font-size:1.15rem}
+p{max-width:68ch;margin:.5em 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;overflow-x:auto}
+.key{background:var(--hl);border-radius:8px;padding:10px 14px;margin:10px 0}
+.key .f{font:italic 19px/1.8 Georgia,"Times New Roman",serif;overflow-x:auto}
+.f{font-family:Georgia,serif;font-size:18px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.two>.card{margin:0}
+svg{max-width:100%;height:auto;color:var(--ink)}svg .w{stroke:currentColor;stroke-width:1.8;fill:none}svg text{fill:var(--ink);font:15px Nunito,system-ui,sans-serif}svg .r{fill:var(--card);stroke:currentColor;stroke-width:1.8}svg .a{stroke:var(--d4);fill:none;stroke-width:1.8}svg .t{fill:var(--d4)}
+figure{margin:12px 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}figure.card{margin:12px 0}
+figure svg{width:100%;display:block}figcaption{color:var(--mut);font-size:14px;margin-top:6px;text-align:left}
+table{width:100%;border-collapse:collapse;font-size:14.5px}td,th{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}th{background:var(--card)}
+label{display:inline-block;margin:4px 12px 4px 0;font-weight:600}input{width:84px;padding:5px 8px;font:inherit;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.out{margin-top:10px;line-height:1.9}.out span{background:var(--hl);border-radius:6px;padding:1px 8px;font-weight:800}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}summary{cursor:pointer;font-weight:600}details p{margin:8px 0 0;color:var(--mut)}
+ul{padding-left:20px;margin:6px 0}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+:root{--accent:var(--d4);--accent2:var(--d3);--sub:var(--mut);--panel:var(--card)}
+.formula{background:var(--hl);border-radius:8px;padding:10px 14px;margin:10px 0;font:italic 18px/1.8 Georgia,"Times New Roman",serif;overflow-x:auto}
+.tag{display:inline-block;background:var(--d3);color:#fff;font-size:12px;font-weight:800;border-radius:99px;padding:2px 12px;margin-bottom:6px}
+.note{color:var(--mut);font-size:14.5px}
+.svgwrap{margin:12px 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;overflow-x:auto}.svgwrap svg{width:100%;display:block}
+.vec{position:relative;display:inline-block;padding-top:.5em}.vec::after{content:"→";position:absolute;top:-.05em;left:50%;transform:translateX(-50%) scale(.62);line-height:1;color:inherit}
+.part{margin:64px 0 -24px;padding:8px 16px;border-radius:99px;background:var(--card);border:1px solid var(--line);display:inline-block;font-weight:800;color:var(--mut)}
+.foot{color:var(--mut);font-size:14px;text-align:center;margin-top:56px}
+svg g[fill] text,svg g[font-weight] text{fill:inherit;font-weight:inherit}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--d4)"/></marker>
+<marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--d3)"/></marker>
+</defs></svg>
+<nav><a href="#coord">Coordonnées</a><a href="#grad">Gradient</a><a href="#circ">Circulation</a><a href="#flux">Flux & divergence</a><a href="#theo">Théorèmes</a><a href="#rot">Rotationnel</a><a href="#lap">Laplacien & ∇</a><a href="#estat">Électrostatique</a><a href="#coulomb">Coulomb & champ</a><a href="#poten">Potentiel</a><a href="#gauss">Gauss</a><a href="#formes">Formulaire</a><a href="#quiz">Auto-test</a><button id="th" aria-label="Changer de thème">Thème</button></nav>
+<header><h1>Rappels mathématiques pour l'électromagnétisme</h1><p>Systèmes de coordonnées · Gradient · Circulation · Flux · Divergence · Rotationnel · Théorèmes de Green-Ostrogradsky et Stokes · Laplacien · <b>Électrostatique</b> : loi de Coulomb · champ · potentiel · théorème de Gauss</p>
+<div class="bar"><i style="background:var(--d1)"></i><i style="background:var(--d2)"></i><i style="background:var(--d3)"></i><i style="background:var(--d4)"></i><i style="background:var(--d5)"></i></div></header>
+<main>
+<div class="part" style="margin-top:8px">Partie I · Rappels mathématiques</div>
+<section id="coord" style="--c:var(--d1)">
+<h2>1. Systèmes de coordonnées</h2>
+
+<h3>Coordonnées cartésiennes</h3>
+<p>Les vecteurs unitaires sont <span class="vec">e</span>x, <span class="vec">e</span>y, <span class="vec">e</span>z. Le déplacement élémentaire entre deux points voisins M et M′ est :</p>
+<div class="formula">d<span class="vec">l</span> = <span class="vec">MM′</span> = dx·<span class="vec">e</span>x + dy·<span class="vec">e</span>y + dz·<span class="vec">e</span>z</div>
+<div class="formula">Volume élémentaire : dτ = dx dy dz</div>
+<div class="formula">Surfaces élémentaires : dS₁ = dx dy &nbsp;&nbsp; dS₂ = dx dz &nbsp;&nbsp; dS₃ = dy dz</div>
+
+<h3>Coordonnées cylindriques</h3>
+<p>Les vecteurs unitaires sont <span class="vec">e</span>r, <span class="vec">e</span>θ, <span class="vec">e</span>z. Le déplacement élémentaire est :</p>
+<div class="formula">d<span class="vec">l</span> = dr·<span class="vec">e</span>r + r·dθ·<span class="vec">e</span>θ + dz·<span class="vec">e</span>z</div>
+<div class="formula">Volume élémentaire : dτ = dr·(r dθ)·dz = r dr dθ dz</div>
+<div class="formula">Surfaces élémentaires : dS<sub>⊥z</sub> = r dr dθ &nbsp;&nbsp; dS<sub>⊥r</sub> = r dθ dz</div>
+<div class="card">
+<span class="tag">Correction</span>
+<p>La surface perpendiculaire à l'axe z (celle qu'on "empile" selon z pour retrouver le volume) doit inclure le facteur r : dS = r·dr·dθ, et non simplement dr·dθ — sinon elle est incompatible avec dτ = r dr dθ dz.</p>
+</div>
+
+<h3>Coordonnées sphériques</h3>
+<p>Les vecteurs unitaires sont <span class="vec">e</span>r, <span class="vec">e</span>θ, <span class="vec">e</span>φ. Le déplacement élémentaire est :</p>
+<div class="formula">d<span class="vec">l</span> = dr·<span class="vec">e</span>r + r·dθ·<span class="vec">e</span>θ + r·sinθ·dφ·<span class="vec">e</span>φ</div>
+<div class="formula">Volume élémentaire : dτ = dr·(r dθ)·(r sinθ dφ) = r² sinθ dr dθ dφ</div>
+<div class="formula">Surface élémentaire (sur une sphère de rayon r) : dS = r² sinθ dθ dφ</div>
+<p class="note">Remarque : le vecteur position radial vérifie <span class="vec">r</span>/r = <span class="vec">e</span>r (vecteur unitaire radial) — c'est de là que vient l'identité div(<span class="vec">r</span>/r) = div(<span class="vec">e</span>r).</p>
+
+<h3>Passage entre coordonnées cartésiennes et polaires/cylindriques</h3>
+<div class="formula"><span class="vec">e</span>r = cosθ·<span class="vec">e</span>x + sinθ·<span class="vec">e</span>y &nbsp;&nbsp;&nbsp; <span class="vec">e</span>θ = −sinθ·<span class="vec">e</span>x + cosθ·<span class="vec">e</span>y</div>
+<div class="formula"><span class="vec">e</span>x = cosθ·<span class="vec">e</span>r − sinθ·<span class="vec">e</span>θ &nbsp;&nbsp;&nbsp; <span class="vec">e</span>y = sinθ·<span class="vec">e</span>r + cosθ·<span class="vec">e</span>θ</div>
+<p class="note">θ désigne ici l'angle polaire/azimutal (même rôle qu'en coordonnées cylindriques).</p>
+</section>
+
+<section id="grad" style="--c:var(--d2)">
+<h2>2. Le gradient d'une fonction scalaire M(x, y, z)</h2>
+<p>La différentielle dM mesure la variation d'une fonction scalaire M entre deux points infiniment proches :</p>
+<div class="formula">dM = (∂M/∂x)·dx + (∂M/∂y)·dy + (∂M/∂z)·dz</div>
+<p>En notant d<span class="vec">M</span> le vecteur déplacement (dx, dy, dz), cette somme est exactement un produit scalaire, ce qui permet de définir le gradient :</p>
+<div class="formula">dM = grad[M(x,y,z)] · d<span class="vec">M</span> &nbsp;&nbsp;avec&nbsp;&nbsp; grad[M] = (∂M/∂x, ∂M/∂y, ∂M/∂z)</div>
+
+<h3>Expression du gradient selon le système de coordonnées</h3>
+<table>
+<tr><th>Cartésiennes</th><th>Cylindriques</th><th>Sphériques</th></tr>
+<tr>
+<td>∂f/∂x ·<span class="vec">e</span>x<br>∂f/∂y ·<span class="vec">e</span>y<br>∂f/∂z ·<span class="vec">e</span>z</td>
+<td>∂f/∂r ·<span class="vec">e</span>r<br>(1/r)·∂f/∂θ ·<span class="vec">e</span>θ<br>∂f/∂z ·<span class="vec">e</span>z</td>
+<td>∂f/∂r ·<span class="vec">e</span>r<br>(1/r)·∂f/∂θ ·<span class="vec">e</span>θ<br>1/(r sinθ)·∂f/∂φ ·<span class="vec">e</span>φ</td>
+</tr>
+</table>
+<p class="note">Remarque : df = grad(f)·d<span class="vec">l</span> — c'est la même relation que dM = grad[M]·d<span class="vec">M</span> ci-dessus, écrite avec le déplacement élémentaire d<span class="vec">l</span> propre à chaque système de coordonnées (§1).</p>
+
+<h3>Signification géométrique</h3>
+<p>Si M est <strong>constante</strong> sur une surface (une équipotentielle), alors dM = 0 pour tout déplacement sur cette surface, donc grad[M]·d<span class="vec">M</span> = 0. Un produit scalaire nul entre deux vecteurs non nuls signifie qu'ils sont perpendiculaires.</p>
+
+<div class="svgwrap">
+<svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="220" cy="140" rx="150" ry="70" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <ellipse cx="220" cy="140" rx="95" ry="44" fill="none" stroke="var(--accent2)" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <circle cx="270" cy="120" r="4" fill="var(--ink)"/>
+  <text x="278" y="115" font-size="14" style="fill:var(--ink)">M</text>
+  <line x1="270" y1="120" x2="270" y2="55" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#arr)"/>
+  <text x="278" y="65" font-size="14" style="fill:var(--accent)">grad[M]</text>
+  <text x="60" y="235" font-size="13" style="fill:var(--sub)">surfaces M(x,y,z) = constante</text>
+  <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 z" fill="var(--accent)"/></marker></defs>
+</svg>
+</div>
+<p class="note">Le gradient est toujours perpendiculaire à la surface de niveau (équipotentielle) au point considéré, et pointe vers les valeurs croissantes de M. C'est pourquoi <span class="vec">E</span> = −grad(V) est toujours perpendiculaire aux surfaces équipotentielles.</p>
+</section>
+
+<section id="circ" style="--c:var(--d3)">
+<h2>3. Circulation d'un champ vectoriel et condition de "dériver d'un potentiel"</h2>
+<p>La circulation d'un champ <span class="vec">A</span> entre deux points le long d'un chemin est :</p>
+<div class="formula">C = ∫ <span class="vec">A</span> · d<span class="vec">l</span></div>
+<p>Un champ <span class="vec">A</span> <strong>dérive d'un potentiel</strong> si sa circulation entre deux points ne dépend pas du chemin suivi. Cela équivaut à dire que la circulation le long de <strong>tout contour fermé</strong> est nulle :</p>
+<div class="formula">∮ <span class="vec">A</span> · d<span class="vec">l</span> = 0</div>
+
+<h3>Condition pour qu'un champ de vecteur soit un gradient</h3>
+<p>Supposons que <span class="vec">A</span>(X, Y, Z) dérive effectivement d'une fonction scalaire M(x,y,z), c'est-à-dire <span class="vec">A</span> = grad[M(x,y,z)] :</p>
+<div class="formula">X(x,y,z) = ∂M/∂x &nbsp;&nbsp;&nbsp; Y(x,y,z) = ∂M/∂y &nbsp;&nbsp;&nbsp; Z(x,y,z) = ∂M/∂z</div>
+<p>En écrivant cette condition composante par composante, on obtient des égalités de dérivées croisées :</p>
+<div class="formula">∂X/∂y = ∂Y/∂x &nbsp;&nbsp; ∂Y/∂z = ∂Z/∂y &nbsp;&nbsp; ∂Z/∂x = ∂X/∂z</div>
+<p>Ce sont exactement les conditions qui garantissent que la forme différentielle <span class="vec">A</span>·d<span class="vec">l</span> est <strong>exacte</strong> (donc qu'elle dérive d'un potentiel). Ces trois égalités se résument en une seule condition vectorielle, nécessaire <strong>et suffisante</strong> :</p>
+<div class="formula">rot(<span class="vec">A</span>) = <span class="vec">0</span></div>
+<p class="note">Un champ dont le rotationnel est nul est dit <em>irrotationnel</em> et dérive toujours d'un potentiel scalaire.</p>
+
+<h3>Définition du rotationnel</h3>
+<p>Plus généralement, pour un champ <span class="vec">A</span>(X, Y, Z) quelconque (pas nécessairement irrotationnel), le rotationnel est le champ de vecteurs défini par :</p>
+<div class="formula">rot(<span class="vec">A</span>) = <span class="vec">∇</span> ∧ <span class="vec">A</span> = ( ∂Z/∂y − ∂Y/∂z ,&nbsp; ∂X/∂z − ∂Z/∂x ,&nbsp; ∂Y/∂x − ∂X/∂y )</div>
+<p class="note">C'est cette définition générale (et non seulement le cas particulier rot(<span class="vec">A</span>)=<span class="vec">0</span> vu ci-dessus) qui intervient dans le théorème de Stokes (§5) et dans les propriétés du rotationnel (§6).</p>
+
+<div class="card">
+<span class="tag">D'où viennent ces égalités ?</span>
+<p>Si <span class="vec">A</span> dérive bien d'un potentiel M, alors X = ∂M/∂x et Y = ∂M/∂y. En dérivant une seconde fois :</p>
+<div class="formula">∂X/∂y = ∂²M/∂x∂y &nbsp;&nbsp;&nbsp; ∂Y/∂x = ∂²M/∂y∂x</div>
+<p>Or, d'après le <strong>théorème de Schwarz</strong> (dérivées croisées d'une fonction suffisamment régulière), ∂²M/∂x∂y = ∂²M/∂y∂x. On en déduit ∂X/∂y = ∂Y/∂x, et de même pour les deux autres paires — d'où les trois conditions.</p>
+</div>
+</section>
+
+<section id="flux" style="--c:var(--d4)">
+<h2>4. Flux et divergence</h2>
+<p>Le flux d'un champ <span class="vec">A</span> à travers une surface élémentaire d<span class="vec">S</span> est :</p>
+<div class="formula">dΦ = <span class="vec">A</span> · d<span class="vec">S</span> = X·dSx + Y·dSy + Z·dSz</div>
+<p>En notant <span class="vec">n</span>(α, β, γ) le vecteur unitaire normal à la surface (α, β, γ étant ses cosinus directeurs), on a d<span class="vec">S</span> = dS·<span class="vec">n</span>, donc dSx = α·dS, dSy = β·dS, dSz = γ·dS, et :</p>
+<div class="formula">dΦ = (α·X + β·Y + γ·Z)·dS = X·dydz + Y·dzdx + Z·dxdy</div>
+<p>Le flux total à travers une surface S s'écrit alors Φ = ∬(X·dydz + Y·dzdx + Z·dxdy).</p>
+
+<h3>Cas d'un champ uniforme sur une surface plane</h3>
+<p>Si <span class="vec">A</span> est uniforme et S une surface plane, le flux se réduit à un simple produit scalaire :</p>
+<div class="formula">Φ = <span class="vec">A</span>·<span class="vec">S</span> = A·S·cos α</div>
+<p>où α est l'angle entre <span class="vec">A</span> et la normale <span class="vec">n</span> à la surface, d'où :</p>
+<div class="formula">Φ<sub>max</sub> = A·S &nbsp;(α = 0, <span class="vec">A</span> ∥ <span class="vec">n</span>) &nbsp;&nbsp;&nbsp; Φ<sub>min</sub> = 0 &nbsp;(α = ±π/2, <span class="vec">A</span> ⊥ <span class="vec">n</span>)</div>
+<p class="note">Convention : pour une surface fermée, le vecteur normal <span class="vec">n</span> est toujours orienté de la surface vers l'extérieur.</p>
+
+<p>Pour construire la divergence "à la main", on calcule le flux net sortant d'un petit parallélépipède (cube PQRS...P'Q'R'S') de côtés dx, dy, dz : sur chaque paire de faces opposées, le flux sortant est la différence de la composante normale entre les deux faces, soit ∂(composante)/∂(direction)·dx dy dz.</p>
+
+<div class="svgwrap">
+<svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- simple parallelepiped -->
+  <polygon points="150,220 150,120 280,120 280,220" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <polygon points="150,120 195,90 325,90 280,120" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <polygon points="280,120 325,90 325,190 280,220" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <line x1="150" y1="220" x2="195" y2="190" stroke="var(--accent2)" stroke-width="1.4" stroke-dasharray="3 2"/>
+  <line x1="195" y1="190" x2="325" y2="190" stroke="var(--accent2)" stroke-width="1.4" stroke-dasharray="3 2"/>
+  <line x1="195" y1="190" x2="195" y2="90" stroke="var(--accent2)" stroke-width="1.4" stroke-dasharray="3 2"/>
+  <!-- flux arrows -->
+  <line x1="215" y1="170" x2="255" y2="170" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a2)"/>
+  <line x1="90" y1="170" x2="150" y2="170" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a2)"/>
+  <text x="60" y="163" font-size="13" style="fill:var(--accent)">A→(x)</text>
+  <text x="260" y="163" font-size="13" style="fill:var(--accent)">A→(x+dx)</text>
+  <text x="175" y="255" font-size="13" style="fill:var(--sub)">dx</text>
+  <text x="130" y="205" font-size="13" style="fill:var(--sub)">dy</text>
+  <text x="330" y="150" font-size="13" style="fill:var(--sub)">dz</text>
+  <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 z" fill="var(--accent)"/></marker></defs>
+</svg>
+</div>
+<div class="card">
+<span class="tag">Détail du calcul, face par face</span>
+<p>Sur la face PQRS (normale sortante −x̂, aire dy·dz) : dΦ₁ = −X(x,y,z)·dy·dz.<br>
+Sur la face opposée P′Q′R′S′ (normale sortante +x̂) : dΦ₂ = +X(x+dx,y,z)·dy·dz.</p>
+<div class="formula">dΦ₁ + dΦ₂ = [X(x+dx,y,z) − X(x,y,z)]·dydz ≈ (∂X/∂x)·dx dy dz</div>
+<p>Même raisonnement sur la paire de faces PQQ′P′ / SRR′S′ (normales ±ŷ) et sur la paire PSS′P′ / QRR′Q′ (normales ±ẑ) :</p>
+<div class="formula">(∂Y/∂y)·dx dy dz &nbsp;&nbsp;&nbsp; et &nbsp;&nbsp;&nbsp; (∂Z/∂z)·dx dy dz</div>
+<p>Le flux total sortant du parallélépipède est la somme des trois contributions :</p>
+<div class="formula">dΦ<sub>total</sub> = (∂X/∂x + ∂Y/∂y + ∂Z/∂z)·dx dy dz</div>
+</div>
+<p>En divisant le flux net par le volume dx dy dz et en passant à la limite, on obtient la divergence :</p>
+<div class="formula">div(<span class="vec">A</span>) = ∂X/∂x + ∂Y/∂y + ∂Z/∂z</div>
+<p class="note">div(<span class="vec">A</span>) mesure, en un point, la tendance du champ à "diverger" (source) ou "converger" (puits) localement.</p>
+</section>
+
+<section id="theo" style="--c:var(--d5)">
+<h2>5. Les deux grands théorèmes</h2>
+
+<h3>Théorème de Green-Ostrogradsky (théorème de la divergence)</h3>
+<p>Il relie le flux à travers une surface <strong>fermée</strong> à l'intégrale de la divergence sur le volume qu'elle enferme :</p>
+<div class="formula">∯ <span class="vec">A</span> · d<span class="vec">S</span> = ∭ div(<span class="vec">A</span>) dV</div>
+
+<h3>Théorème de Stokes</h3>
+<p>Il relie la circulation le long d'un contour <strong>fermé</strong> au flux du rotationnel à travers une surface quelconque s'appuyant sur ce contour :</p>
+<div class="formula">∮ <span class="vec">A</span> · d<span class="vec">l</span> = ∬ rot(<span class="vec">A</span>) · d<span class="vec">S</span></div>
+
+<div class="svgwrap">
+<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+  <!-- closed surface (left) -->
+  <ellipse cx="150" cy="110" rx="100" ry="70" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <line x1="150" y1="110" x2="150" y2="40" stroke="var(--accent)" stroke-width="2" marker-end="url(#a3)"/>
+  <text x="155" y="55" font-size="13" style="fill:var(--accent)">dS→</text>
+  <text x="80" y="205" font-size="13" style="fill:var(--sub)">surface fermée → volume V</text>
+  <!-- closed contour (right) -->
+  <path d="M 420 70 C 380 90, 380 150, 420 165 C 460 180, 500 150, 500 110 C 500 80, 470 55, 420 70" fill="none" stroke="var(--accent2)" stroke-width="2"/>
+  <line x1="450" y1="110" x2="450" y2="60" stroke="var(--accent)" stroke-width="2" marker-end="url(#a3)"/>
+  <text x="455" y="70" font-size="13" style="fill:var(--accent)">dS→</text>
+  <text x="390" y="205" font-size="13" style="fill:var(--sub)">contour fermé → surface S</text>
+  <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 z" fill="var(--accent)"/></marker></defs>
+</svg>
+</div>
+<p class="note">Ces théorèmes permettent de passer d'une équation "intégrale" (sur un bord) à une équation "locale" (différentielle) — c'est exactement ainsi qu'on obtient les équations de Maxwell sous forme locale à partir de leur forme intégrale.</p>
+
+<div class="card">
+<span class="tag">D'où vient le théorème de Stokes ?</span>
+<p>On calcule la circulation de <span class="vec">A</span> sur un petit contour rectangulaire élémentaire PQRSP, de côtés dx et dy, situé dans le plan (x,y) :</p>
+<div class="formula">
+sur PQ (y = y₀) : X(x,y₀)·dx &nbsp;&nbsp; sur RS (y = y₀+dy, parcouru en sens inverse) : −X(x,y₀+dy)·dx<br>
+somme ≈ −(∂X/∂y)·dx dy
+</div>
+<div class="formula">
+sur QR (x = x₀+dx) : Y(x₀+dx,y)·dy &nbsp;&nbsp; sur SP (x = x₀, sens inverse) : −Y(x₀,y)·dy<br>
+somme ≈ +(∂Y/∂x)·dx dy
+</div>
+<p>La circulation totale le long de PQRSP vaut donc :</p>
+<div class="formula">∮<sub>PQRSP</sub> <span class="vec">A</span>·d<span class="vec">l</span> = (∂Y/∂x − ∂X/∂y)·dx dy = rot<sub>z</sub>(<span class="vec">A</span>)·dS</div>
+<p>En pavant une surface S quelconque par de tels rectangles élémentaires, les circulations sur les arêtes internes s'annulent deux à deux (parcourues en sens opposés), et il ne reste que la circulation sur le contour extérieur : on retrouve ∮<span class="vec">A</span>·d<span class="vec">l</span> = ∬rot(<span class="vec">A</span>)·d<span class="vec">S</span>.</p>
+</div>
+</section>
+
+<section id="rot" style="--c:var(--d1)">
+<h2>6. Propriétés du rotationnel</h2>
+<p class="note">Rappel (§3) : rot(<span class="vec">A</span>) = <span class="vec">∇</span> ∧ <span class="vec">A</span> = ( ∂Z/∂y − ∂Y/∂z, &nbsp;∂X/∂z − ∂Z/∂x, &nbsp;∂Y/∂x − ∂X/∂y ).</p>
+
+<h3>Expression du rotationnel en coordonnées curvilignes</h3>
+<div class="formula">Cylindriques : rot(<span class="vec">A</span>) = (1/r·∂Az/∂θ − ∂Aθ/∂z)·<span class="vec">e</span>r + (∂Ar/∂z − ∂Az/∂r)·<span class="vec">e</span>θ + (1/r)·[∂(r·Aθ)/∂r − ∂Ar/∂θ]·<span class="vec">e</span>z</div>
+<div class="formula">Sphériques : rot(<span class="vec">A</span>) = 1/(r sinθ)·[∂(Aφ sinθ)/∂θ − ∂Aθ/∂φ]·<span class="vec">e</span>r + (1/r)·[1/sinθ·∂Ar/∂φ − ∂(r·Aφ)/∂r]·<span class="vec">e</span>θ + (1/r)·[∂(r·Aθ)/∂r − ∂Ar/∂θ]·<span class="vec">e</span>φ</div>
+
+<div class="card">
+<span class="tag">Identité 1</span>
+<p><strong>div(rot(<span class="vec">B</span>)) = 0</strong> toujours — la divergence d'un rotationnel est identiquement nulle.</p>
+<p class="note">Preuve : div(rot <span class="vec">B</span>) = ∂/∂x(∂Bz/∂y−∂By/∂z) + ∂/∂y(∂Bx/∂z−∂Bz/∂x) + ∂/∂z(∂By/∂x−∂Bx/∂y). En développant, chaque dérivée seconde croisée apparaît deux fois avec un signe opposé (ex. +∂²Bz/∂x∂y puis −∂²Bz/∂y∂x, égales par Schwarz) : tous les termes s'annulent deux à deux, d'où le résultat.</p>
+<span class="tag">Identité 2</span>
+<p><strong>rot(grad(M)) = <span class="vec">0</span></strong> toujours — le rotationnel d'un gradient est identiquement nul.</p>
+</div>
+<p class="note">Conséquence pratique : "rotationnel nul ⇒ le champ dérive d'un potentiel scalaire" et "divergence nulle ⇒ le champ peut s'écrire comme un rotationnel d'un autre champ". C'est ce deuxième point qui justifie l'écriture <span class="vec">B</span> = rot(<span class="vec">A</span>), où <span class="vec">A</span> est le potentiel vecteur, puisque div(<span class="vec">B</span>) = 0 en magnétostatique.</p>
+
+<h3>Caractère conservatif du flux</h3>
+<p>Soient S₁ et S₂ deux surfaces différentes s'appuyant sur le même contour fermé C. Leur réunion (S₁ ∪ −S₂) forme une surface fermée délimitant un volume V, donc d'après Green-Ostrogradsky :</p>
+<div class="formula">Φ(S₁) − Φ(S₂) = ∯ <span class="vec">B</span>·d<span class="vec">S</span> = ∭<sub>V</sub> div(<span class="vec">B</span>) dV</div>
+<p>Donc le flux de <span class="vec">B</span> est <strong>conservatif</strong> (indépendant de la surface choisie, pour un même contour) si et seulement si div(<span class="vec">B</span>) = 0 :</p>
+<div class="formula">div(<span class="vec">B</span>) = 0 &nbsp;⟺&nbsp; Φ(S₁) = Φ(S₂) &nbsp;∀ S₁, S₂ s'appuyant sur le même contour C</div>
+
+<h3>Existence et non-unicité du potentiel vecteur</h3>
+<div class="formula">div(<span class="vec">B</span>) = 0 &nbsp;⟺&nbsp; il existe <span class="vec">A</span>₀ tel que <span class="vec">B</span> = rot(<span class="vec">A</span>₀)</div>
+<p>Ce potentiel vecteur n'est pas unique : si <span class="vec">A</span>₀ convient, alors <span class="vec">A</span> = <span class="vec">A</span>₀ + grad(f) convient aussi, quelle que soit la fonction scalaire f, puisque :</p>
+<div class="formula">rot(<span class="vec">A</span>) = rot(<span class="vec">A</span>₀) + rot(grad(f)) = rot(<span class="vec">A</span>₀) + <span class="vec">0</span> = <span class="vec">B</span></div>
+<p class="note">Le potentiel vecteur n'est donc défini qu'à un gradient près : c'est cette liberté de "jauge" qui permet, par exemple, d'imposer une condition supplémentaire comme div(<span class="vec">A</span>) = 0 (jauge de Coulomb).</p>
+<p class="note"><strong>En résumé</strong> : un champ <span class="vec">U</span> est "un rotationnel" (d'un autre champ) si et seulement si div(<span class="vec">U</span>) = 0 <em>et</em> il existe <span class="vec">V</span> tel que <span class="vec">U</span> = rot(<span class="vec">V</span>).</p>
+</section>
+
+<section id="lap" style="--c:var(--d2)">
+<h2>7. Laplacien et opérateur nabla</h2>
+<p>Le Laplacien scalaire d'une fonction M :</p>
+<div class="formula">ΔM = ∂²M/∂x² + ∂²M/∂y² + ∂²M/∂z² = div(grad(M))</div>
+<p>Le Laplacien vectoriel d'un champ <span class="vec">A</span> :</p>
+<div class="formula">Δ<span class="vec">A</span> = grad(div(<span class="vec">A</span>)) − rot(rot(<span class="vec">A</span>))</div>
+<p class="note">Cette dernière identité est celle qui, appliquée aux équations de Maxwell, permet de retrouver l'équation de propagation des ondes électromagnétiques.</p>
+
+<div class="card">
+<span class="tag">Vérification composante par composante</span>
+<p>Sur la composante en x, avec rot<sub>z</sub>(<span class="vec">A</span>) = ∂Y/∂x−∂X/∂y et rot<sub>y</sub>(<span class="vec">A</span>) = ∂X/∂z−∂Z/∂x :</p>
+<div class="formula">[rot(rot <span class="vec">A</span>)]<sub>x</sub> = ∂/∂y(∂Y/∂x−∂X/∂y) − ∂/∂z(∂X/∂z−∂Z/∂x)</div>
+<p>En ajoutant et retranchant ∂²X/∂x², ce terme se réorganise en :</p>
+<div class="formula">[rot(rot <span class="vec">A</span>)]<sub>x</sub> = ∂/∂x(∂X/∂x+∂Y/∂y+∂Z/∂z) − (∂²X/∂x²+∂²X/∂y²+∂²X/∂z²) = [grad(div <span class="vec">A</span>)]<sub>x</sub> − ΔX</div>
+<p>Ce qui redonne bien, composante par composante, Δ<span class="vec">A</span> = grad(div <span class="vec">A</span>) − rot(rot <span class="vec">A</span>) — une identité toujours vraie, quel que soit le champ <span class="vec">A</span>.</p>
+</div>
+
+<h3>Récapitulatif avec l'opérateur <span class="vec">∇</span></h3>
+<p><span class="vec">∇</span> = (∂/∂x, ∂/∂y, ∂/∂z) est une notation compacte :</p>
+<div class="formula">grad(M) = <span class="vec">∇</span>M &nbsp;&nbsp; div(<span class="vec">A</span>) = <span class="vec">∇</span>·<span class="vec">A</span> &nbsp;&nbsp; rot(<span class="vec">A</span>) = <span class="vec">∇</span>∧<span class="vec">A</span> &nbsp;&nbsp; ΔM = <span class="vec">∇</span>·<span class="vec">∇</span>M = ∇²M</div>
+</section>
+
+
+<div class="part" id="partie2">Partie II · L'électrostatique</div>
+
+<section id="estat" style="--c:var(--d3)"><h2>8. Introduction à l'électrostatique</h2>
+<p>Selon que les charges et les courants sont constants ou variables, on distingue plusieurs domaines :</p>
+<div class="two">
+<div class="card"><span class="tag">Régime stationnaire</span><p>Charges et courants <b>constants</b> : électrostatique, électrocinétique, magnétostatique.</p></div>
+<div class="card"><span class="tag">Régime variable</span><p>q(t) et i(t) dépendent du temps : c'est l'<b>électromagnétisme</b> complet.</p></div></div>
+<div class="key"><div class="f">L'électrostatique étudie les effets produits par des charges <b>stationnaires</b>.</div></div>
+<p class="note">Constantes du cours : 1/(4πε₀) = 9·10⁹ (SI) avec ε₀ = 1/(36π·10⁹) F/m, et μ₀ = 4π·10⁻⁷ (utile en magnétostatique).</p></section>
+
+<section id="coulomb" style="--c:var(--d4)"><h2>9. Loi de Coulomb, champ électrostatique</h2>
+<h3>9.1 Force de Coulomb</h3>
+<p>Deux charges ponctuelles q₁ (en A) et q₂ (en B), séparées par r = AB, s'exercent une force <b>à distance, dans le vide</b>, portée par la droite AB. Avec <span class="vec">u</span> = <span class="vec">AB</span>/‖<span class="vec">AB</span>‖ :</p>
+<div class="formula"><span class="vec">F</span> = (1/4πε₀) · q₁q₂ · <span class="vec">u</span> / r² &nbsp;&nbsp; et &nbsp;&nbsp; <span class="vec">f</span><sub>12</sub> = −<span class="vec">f</span><sub>21</sub></div>
+<figure><svg viewBox="0 0 560 150" role="img" aria-label="Force de Coulomb entre deux charges">
+<line class="w" x1="120" y1="75" x2="420" y2="75" stroke-dasharray="5 4"/>
+<circle cx="120" cy="75" r="9" fill="var(--d4)"/><circle cx="420" cy="75" r="9" fill="var(--d4)"/>
+<text x="112" y="108">q₁ (A)</text><text x="412" y="108">q₂ (B)</text>
+<line class="a" x1="105" y1="75" x2="35" y2="75" marker-end="url(#ah)"/><text x="40" y="62">−F</text>
+<line class="a" x1="435" y1="75" x2="520" y2="75" marker-end="url(#ah)"/><text x="480" y="62">F</text>
+<line stroke="var(--d3)" stroke-width="2" x1="150" y1="40" x2="215" y2="40" marker-end="url(#ab)"/><text x="225" y="45" style="fill:var(--d3)">u</text>
+<text x="255" y="130">r = AB</text></svg>
+<figcaption>Charges de même signe : répulsion (ici). De signes opposés, les deux forces s'inversent : attraction.</figcaption></figure>
+<p>La force varie en 1/r² : elle chute vite avec la distance. Dans un milieu matériel autre que le vide, on remplace ε₀ par ε₀·ε<sub>r</sub>, où ε<sub>r</sub> est la <b>permittivité relative</b> du milieu.</p>
+
+<h3>9.2 Notion de champ électrique</h3>
+<p>Une charge q placée en M subit <span class="vec">F</span> = q·<span class="vec">E</span>(M) : <span class="vec">E</span> est le résultat de l'environnement autour de M. Si cet environnement se réduit à une charge q₁ placée en A, par identification avec la loi de Coulomb :</p>
+<div class="formula"><span class="vec">E</span>(M) = (1/4πε₀) · q₁ · <span class="vec">AM</span> / AM³ = (1/4πε₀) · (q₁/r²) · <span class="vec">u</span></div>
+<p><span class="vec">E</span> est le champ électrostatique créé en M par la charge q₁ située en A. Il est radial : sortant si q₁ &gt; 0, entrant si q₁ &lt; 0.</p>
+
+<h3>9.3 Superposition : plusieurs charges</h3>
+<p>Pour des charges q₁…q<sub>n</sub> placées en P₁…P<sub>n</sub>, les champs s'additionnent vectoriellement :</p>
+<div class="formula"><span class="vec">E</span>(M) = (1/4πε₀) · Σ<sub>i=1..n</sub> q<sub>i</sub> · <span class="vec">P<sub>i</sub>M</span> / P<sub>i</sub>M³</div>
+<figure><svg viewBox="0 0 560 220" role="img" aria-label="Superposition des champs">
+<g stroke="var(--mut)" stroke-dasharray="4 4" fill="none"><line x1="70" y1="40" x2="330" y2="110"/><line x1="50" y1="115" x2="330" y2="110"/><line x1="100" y1="185" x2="330" y2="110"/></g>
+<g fill="var(--d4)"><circle cx="70" cy="40" r="8"/><circle cx="50" cy="115" r="8"/><circle cx="100" cy="185" r="8"/></g>
+<text x="82" y="36">P₁ (q₁)</text><text x="62" y="140">P₂ (q₂)</text><text x="112" y="205">P₃ (q₃)</text>
+<circle cx="330" cy="110" r="4" fill="var(--ink)"/><text x="318" y="140">M</text>
+<g stroke="var(--d3)" stroke-width="1.8"><line x1="330" y1="110" x2="380" y2="121" marker-end="url(#ab)"/><line x1="330" y1="110" x2="385" y2="108" marker-end="url(#ab)"/><line x1="330" y1="110" x2="378" y2="98" marker-end="url(#ab)"/></g>
+<text x="388" y="132" style="fill:var(--d3)">E₁</text><text x="396" y="100" style="fill:var(--d3)">E₂</text><text x="380" y="82" style="fill:var(--d3)">E₃</text>
+<line stroke="var(--d4)" stroke-width="3" x1="330" y1="110" x2="483" y2="107" marker-end="url(#ah)"/><text x="470" y="92" style="fill:var(--d4)">E = ΣEᵢ</text></svg>
+<figcaption>Trois charges positives : le champ total en M est la somme vectorielle des trois champs partiels.</figcaption></figure>
+
+<h3>9.4 Distribution continue de charge</h3>
+<p>Autour d'un point P, une densité volumique de charge ρ(P) (en C/m³) donne la charge élémentaire dq = ρ·dτ, et la charge totale q = ∭ρ·dτ. La somme discrète devient une intégrale :</p>
+<div class="formula"><span class="vec">E</span>(M) = (1/4πε₀) ∭<sub>(τ)</sub> ρ(P) · <span class="vec">PM</span> / PM³ · dτ</div>
+<details><summary>Du champ à la force : le résumé</summary><p>Une charge Q en M subit <span class="vec">F</span> = (1/4πε₀)·q·Q·<span class="vec">PM</span>/PM³ = Q·<span class="vec">E</span>(M), avec <span class="vec">E</span>(M) = (1/4πε₀)·q·<span class="vec">PM</span>/PM³ : le champ ne dépend que de la source q, pas de la charge d'essai Q.</p></details></section>
+
+<section id="poten" style="--c:var(--d5)"><h2>10. Potentiel électrostatique</h2>
+<h3>10.1 Circulation et potentiel</h3>
+<p>Le travail élémentaire d'une charge q est dW = <span class="vec">F</span>·d<span class="vec">M</span>. En divisant par q, on obtient la circulation élémentaire du champ, que l'on écrit comme l'opposé d'une variation de V :</p>
+<div class="formula">dC = <span class="vec">E</span>·d<span class="vec">M</span> = −dV &nbsp;⟺&nbsp; dV = −<span class="vec">E</span>·d<span class="vec">M</span> &nbsp;⟺&nbsp; <span class="vec">E</span> = −grad[V]</div>
+<p>On dit que le champ électrostatique <b>dérive d'un potentiel scalaire</b> V : c'est une caractéristique de l'électrostatique. D'après le §3 et le §6, cela équivaut à :</p>
+<div class="formula">rot(<span class="vec">E</span>) = rot(−grad V) = <span class="vec">0</span></div>
+
+<h3>10.2 Potentiel d'une charge ponctuelle</h3>
+<p>Pour une charge q en A, déplaçons M en M′ : d<span class="vec">M</span> = <span class="vec">MM′</span>, et seule la composante radiale de d<span class="vec">M</span> compte, soit <span class="vec">u</span>·d<span class="vec">M</span> = dr.</p>
+<figure><svg viewBox="0 0 560 220" role="img" aria-label="Circulation du champ entre deux sphères voisines">
+<path d="M232 30 A190 190 0 0 1 232 190" fill="none" stroke="var(--mut)" stroke-dasharray="4 4"/>
+<path d="M252 30 A208 208 0 0 1 252 190" fill="none" stroke="var(--mut)" stroke-dasharray="4 4"/>
+<line class="w" x1="60" y1="110" x2="268" y2="110"/><circle cx="60" cy="110" r="8" fill="var(--d4)"/><text x="48" y="138">q (A)</text>
+<circle cx="250" cy="110" r="4" fill="var(--ink)"/><text x="232" y="132">M</text>
+<line stroke="var(--d3)" stroke-width="2" x1="250" y1="110" x2="360" y2="110" marker-end="url(#ab)"/><text x="365" y="115" style="fill:var(--d3)">E(M)</text>
+<line class="a" x1="250" y1="110" x2="260" y2="66" marker-end="url(#ah)"/><circle cx="262" cy="62" r="4" fill="var(--ink)"/><text x="272" y="62">M′</text><text x="272" y="82" style="fill:var(--d4)">dM</text>
+<line stroke="var(--mut)" stroke-dasharray="3 3" x1="262" y1="62" x2="268" y2="110"/>
+<text x="226" y="96" style="font-size:13px">θ</text>
+<text x="255" y="160">dr</text><text x="128" y="100">r</text>
+<text x="300" y="200" style="fill:var(--mut);font-size:13px">sphères de rayons r et r + dr</text></svg>
+<figcaption>La circulation élémentaire vaut E·MM′·cosθ = E·dr : seule la projection radiale du déplacement compte.</figcaption></figure>
+<div class="formula">dC = <span class="vec">E</span>·d<span class="vec">M</span> = E·MM′·cosθ = E·dr &nbsp;⇒&nbsp; V(r) = −∫ (1/4πε₀)(q/r²) dr</div>
+<div class="key"><div class="f">V(r) = (1/4πε₀) · q / r + C &nbsp;&nbsp;(C fixée en prenant V(∞) = 0)</div></div>
+<p>V est appelée la <b>fonction potentiel</b>. Entre deux points A et B, la circulation vaut :</p>
+<div class="formula">C<sub>AB</sub> = ∫<sub>A</sub><sup>B</sup> <span class="vec">E</span>·d<span class="vec">r</span> = (q/4πε₀)[−1/r]<sub>A</sub><sup>B</sup> = (q/4πε₀)(1/r<sub>A</sub> − 1/r<sub>B</sub>) = V<sub>A</sub> − V<sub>B</sub></div>
+<figure><svg viewBox="0 0 560 230" role="img" aria-label="Équipotentielles, lignes de champ et courbe V(r)">
+<g fill="none" stroke="var(--d3)" stroke-width="1.6"><circle cx="150" cy="115" r="35"/><circle cx="150" cy="115" r="65"/><circle cx="150" cy="115" r="95"/></g>
+<g stroke="var(--d4)" stroke-width="1.8">
+<line x1="162" y1="115" x2="250" y2="115" marker-end="url(#ah)"/><line x1="138" y1="115" x2="50" y2="115" marker-end="url(#ah)"/>
+<line x1="150" y1="103" x2="150" y2="17" marker-end="url(#ah)"/><line x1="150" y1="127" x2="150" y2="213" marker-end="url(#ah)"/>
+<line x1="159" y1="106" x2="222" y2="43" marker-end="url(#ah)"/><line x1="141" y1="106" x2="78" y2="43" marker-end="url(#ah)"/>
+<line x1="159" y1="124" x2="222" y2="187" marker-end="url(#ah)"/><line x1="141" y1="124" x2="78" y2="187" marker-end="url(#ah)"/></g>
+<circle cx="150" cy="115" r="9" fill="var(--d4)"/><text x="143" y="119" style="fill:#fff;font-size:13px">+</text>
+<text x="72" y="228" style="font-size:12px;fill:var(--mut)">V = cste (cercles) ⊥ E (rayons)</text>
+<line class="w" x1="330" y1="200" x2="540" y2="200"/><line class="w" x1="330" y1="200" x2="330" y2="20"/>
+<path d="M345 30 C352 130 400 175 535 190" fill="none" stroke="var(--d5)" stroke-width="2.4"/>
+<text x="520" y="218">r</text><text x="336" y="30">V</text><text x="400" y="110" style="fill:var(--d5)">V = q/(4πε₀r)</text></svg>
+<figcaption>À gauche : les équipotentielles sont des sphères centrées sur la charge, E leur est perpendiculaire (E = −grad V). À droite : V décroît en 1/r.</figcaption></figure>
+
+<h3>10.3 Plusieurs charges et distribution continue</h3>
+<div class="two">
+<div class="card"><h3>Charges q₁…q<sub>n</sub></h3><div class="key"><div class="f">V(M) = (1/4πε₀) Σ q<sub>i</sub> / P<sub>i</sub>M</div></div><p>Le potentiel est un <b>scalaire</b> : on additionne simplement les termes.</p></div>
+<div class="card"><h3>Densité ρ(P)</h3><div class="key"><div class="f">V(M) = (1/4πε₀) ∭ ρ(P)/PM · dτ</div></div><p>Intégrale sur tout le volume chargé.</p></div></div></section>
+
+<section id="gauss" style="--c:var(--d1)"><h2>11. Théorème de Gauss</h2>
+<h3>11.1 Flux du champ et angle solide</h3>
+<p>Le flux élémentaire du champ à travers une surface élémentaire d<span class="vec">S</span> (vecteur normal à la surface, de norme dS) est dΦ = <span class="vec">E</span>·d<span class="vec">S</span>. Pour une charge ponctuelle q :</p>
+<div class="formula">dΦ = <span class="vec">E</span>·d<span class="vec">S</span> = (1/4πε₀) · q · [ <span class="vec">u</span>·d<span class="vec">S</span> / r² ]</div>
+<p>Le crochet est une <b>quantité purement géométrique</b> : il mesure l'ouverture du cône vu depuis la charge. On l'appelle l'<b>angle solide</b> dΩ :</p>
+<div class="key"><div class="f">dΩ = <span class="vec">u</span>·d<span class="vec">S</span> / r² &nbsp;&nbsp;⇒&nbsp;&nbsp; dΦ = q · dΩ / (4πε₀)</div></div>
+<figure><svg viewBox="0 0 560 200" role="img" aria-label="Angle solide sous lequel la charge voit la surface">
+<path d="M60 100 L340 40 L340 160 Z" fill="var(--d1)" fill-opacity=".15" stroke="var(--mut)" stroke-dasharray="4 4"/>
+<line class="w" x1="60" y1="100" x2="340" y2="100"/><circle cx="60" cy="100" r="9" fill="var(--d4)"/><text x="48" y="128">q</text><text x="190" y="92">r</text>
+<line stroke="var(--ink)" stroke-width="5" x1="340" y1="40" x2="340" y2="160"/><text x="318" y="30">dS</text>
+<line stroke="var(--d3)" stroke-width="2" x1="340" y1="100" x2="440" y2="100" marker-end="url(#ab)"/><text x="400" y="90" style="fill:var(--d3)">E, u</text>
+<text x="446" y="130" style="fill:var(--d1);font-weight:700">dΩ = u·dS/r²</text><text x="446" y="152" style="fill:var(--mut);font-size:13px">ouverture du cône</text></svg>
+<figcaption>Le flux dépend seulement de l'ouverture du cône (angle solide), pas de la distance r.</figcaption></figure>
+
+<h3>11.2 Surface fermée : le théorème</h3>
+<p>Sur une surface fermée (S) entourant la charge q, l'angle solide total vaut ∬dΩ = 4π. D'où :</p>
+<div class="formula">Φ = ∯ dΦ = (q/4πε₀) ∬ dΩ = (q/4πε₀)·4π = q/ε₀</div>
+<figure><svg viewBox="0 0 560 210" role="img" aria-label="Surface de Gauss">
+<path d="M100 70 C150 20 300 20 360 70 C410 120 330 180 230 172 C140 188 60 140 100 70 Z" fill="var(--d1)" fill-opacity=".1" stroke="var(--d1)" stroke-width="2.4"/>
+<g fill="var(--d4)" font-weight="800"><text x="170" y="100" style="font-size:22px">+</text><text x="245" y="85" style="font-size:22px">+</text><text x="300" y="130" style="font-size:22px">+</text><text x="205" y="145" style="font-size:22px">−</text></g>
+<g fill="var(--mut)"><text x="40" y="45" style="font-size:22px">+</text><text x="430" y="55" style="font-size:22px">+</text><text x="415" y="170" style="font-size:22px">−</text></g>
+<text x="215" y="118" style="fill:var(--d4);font-size:13px">q_int</text><text x="410" y="95" style="font-size:13px;fill:var(--mut)">q_ext</text><text x="110" y="62" style="fill:var(--d1);font-weight:700">S</text>
+<text x="440" y="130" style="font-size:13px;fill:var(--mut)">(flux nul)</text></svg>
+<figcaption>Seules les charges intérieures à S comptent. Une charge extérieure traverse S deux fois en sens opposés : son flux net est nul.</figcaption></figure>
+<div class="key"><div class="f">Φ<sub>total</sub> = ∯ <span class="vec">E</span>·d<span class="vec">S</span> = (1/ε₀) · Σ q<sub>int</sub> = Q<sub>int</sub> / ε₀</div></div>
+
+<h3>11.3 Distributions de charge</h3>
+<p>Une <b>distribution de charge</b> décrit comment les charges sont réparties en volume, en surface ou en longueur.</p>
+<div class="two">
+<figure class="card"><svg viewBox="0 0 280 200" role="img" aria-label="Volume élémentaire dx dy dz">
+<g class="w"><rect x="40" y="70" width="120" height="90"/><path d="M40 70 L90 30 H210 L160 70 M160 160 L210 120 V30"/><path d="M90 30 V120 H40" stroke-dasharray="3 3"/><path d="M90 120 H210" stroke-dasharray="3 3"/></g>
+<text x="90" y="182">dx</text><text x="190" y="152">dy</text><text x="12" y="120">dz</text>
+<text x="85" y="122" style="fill:var(--d4);font-weight:700">dq</text></svg>
+<figcaption>dτ = dx·dy·dz et dq = ρ·dτ</figcaption></figure>
+<div class="card"><table>
+<tr><th>Répartition</th><th>Densité</th><th>Charge</th></tr>
+<tr><td>Volumique</td><td>ρ = dq/dτ (C/m³)</td><td>dq = ρ dτ</td></tr>
+<tr><td>Surfacique</td><td>σ = dq/dS (C/m²)</td><td>dq = σ dS</td></tr>
+<tr><td>Linéique</td><td>λ = dq/dl (C/m)</td><td>dq = λ dl</td></tr></table></div></div>
+
+<h3>11.4 Forme locale : première équation de Maxwell</h3>
+<p>Le théorème de Green-Ostrogradsky (§5) donne ∯<span class="vec">E</span>·d<span class="vec">S</span> = ∭div(<span class="vec">E</span>)dτ. Sur un volume élémentaire, le flux sortant vaut aussi dq/ε₀ = ρ·dτ/ε₀ :</p>
+<div class="formula">dΦ = <span class="vec">E</span>·d<span class="vec">S</span> = div(<span class="vec">E</span>)·dτ = dq/ε₀ = ρ·dτ/ε₀</div>
+<div class="key"><div class="f">div(<span class="vec">E</span>) = ρ / ε₀ &nbsp;&nbsp;(équation de Maxwell-Gauss)</div></div>
+<details><summary>Lien avec le potentiel : l'équation de Poisson</summary><p>Comme <span class="vec">E</span> = −grad V, on obtient div(−grad V) = ρ/ε₀, soit ΔV = −ρ/ε₀ (§7). Dans une zone sans charge (ρ = 0), ΔV = 0 : c'est l'équation de Laplace.</p></details></section>
+
+<section id="formes" style="--c:var(--d2)"><h2>Formulaire d'électrostatique</h2><div class="card"><table>
+<tr><th>Grandeur</th><th>Expression</th></tr>
+<tr><td>Force de Coulomb</td><td><span class="vec">F</span> = (1/4πε₀) q₁q₂ <span class="vec">u</span>/r²</td></tr>
+<tr><td>Champ d'une charge</td><td><span class="vec">E</span> = (1/4πε₀)(q/r²)<span class="vec">u</span> ; <span class="vec">F</span> = q<span class="vec">E</span></td></tr>
+<tr><td>Superposition</td><td><span class="vec">E</span> = (1/4πε₀) Σ q<sub>i</sub> <span class="vec">P<sub>i</sub>M</span>/P<sub>i</sub>M³</td></tr>
+<tr><td>Potentiel</td><td>V = (1/4πε₀)(q/r) + C ; <span class="vec">E</span> = −grad V</td></tr>
+<tr><td>Circulation</td><td>C<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub> ; rot <span class="vec">E</span> = 0</td></tr>
+<tr><td>Gauss (intégral)</td><td>∯<span class="vec">E</span>·d<span class="vec">S</span> = Q<sub>int</sub>/ε₀</td></tr>
+<tr><td>Gauss (local)</td><td>div <span class="vec">E</span> = ρ/ε₀ ; ΔV = −ρ/ε₀</td></tr></table></div></section>
+
+<section id="quiz" style="--c:var(--d3)"><h2>Auto-test</h2><p>Réponds dans ta tête, puis ouvre. On prend 1/(4πε₀) = 9·10⁹ SI.</p>
+<details><summary>Deux charges de 1 µC séparées de 3 cm : force entre elles ?</summary><p>F = 9·10⁹ × 10⁻¹² / (3·10⁻²)² = 10 N, répulsive (charges de même signe).</p></details>
+<details><summary>Champ créé à 30 cm par une charge de 2 nC ?</summary><p>E = 9·10⁹ × 2·10⁻⁹ / 0,3² = 18 / 0,09 = 200 V/m, dirigé vers l'extérieur.</p></details>
+<details><summary>Potentiel à la même distance (V(∞) = 0) ?</summary><p>V = 9·10⁹ × 2·10⁻⁹ / 0,3 = 60 V. Vérification : E = −dV/dr = V/r = 200 V/m ✓.</p></details>
+<details><summary>Une surface fermée contient 4 nC au total : flux de E à travers elle ?</summary><p>Φ = Q<sub>int</sub>/ε₀ = 4·10⁻⁹ × 36π·10⁹ ≈ 452 V·m, quelle que soit la forme de la surface.</p></details>
+<details><summary>Une charge est à l'extérieur de la surface de Gauss : contribue-t-elle au flux ?</summary><p>Non : son flux net est nul, car ses lignes de champ entrent et ressortent. Elle modifie E en chaque point, mais pas le flux total.</p></details>
+<details><summary>Pourquoi E = −grad V implique-t-il rot E = 0 ?</summary><p>Parce que rot(grad f) = 0 pour toute fonction f (§6, identité 2). Le champ électrostatique est donc irrotationnel.</p></details>
+<details><summary>Que vaut div E dans une région sans charge ?</summary><p>div E = ρ/ε₀ = 0 : aucune source dans cette région, le flux sortant de tout petit volume y est nul.</p></details></section>
+
+<div class="foot">Document généré à partir de vos notes de cours — électromagnétisme, STIC.</div>
+</main>
+<script>
+(function(){const r=document.documentElement,b=document.getElementById("th");b.addEventListener("click",()=>{const d=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=d?"light":"dark"})})();
+</script></body></html>
