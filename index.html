@@ -48,9 +48,9 @@ details{border:1px solid var(--line);margin:8px 0;padding:8px 12px}summary{curso
  <button id="th">☀ MODE JOUR</button><nav id="nav"></nav>
 </aside>
 <main>
-<header class="hero"><h1>Rappels mathématiques pour l’électromagnétisme</h1><p>Systèmes de coordonnées · Gradient · Circulation · Flux · Divergence · Rotationnel · Green-Ostrogradsky &amp; Stokes · Laplacien · <b>Électrostatique</b> : Coulomb · champ · potentiel · Gauss</p></header>
+<header class="hero"><h1>Rappels mathématiques pour l’électromagnétisme</h1><p>Systèmes de coordonnées · Gradient · Circulation · Flux · Divergence · Rotationnel · Green-Ostrogradsky &amp; Stokes · Laplacien · <b>Électrostatique</b> : Coulomb · champ · potentiel · Gauss · <b>Magnétostatique</b> : Biot-Savart · Ampère</p></header>
 
-<section class="sheet" id="coord" data-n="FEUILLE 01 / 13">
+<section class="sheet" id="coord" data-n="FEUILLE 01 / 15">
 <h2><small>Partie I · Rappels mathématiques</small>1. Systèmes de coordonnées</h2>
 <p>Le point <b>M</b> se déplace de lui-même vers une nouvelle position (le cercle pointillé indique où il va atterrir, la traînée montre son trajet). Les segments colorés sont ses coordonnées, les flèches sont les vecteurs unitaires en M. Glisse horizontalement sur la figure pour la faire tourner, ou règle les curseurs à la main.</p>
 <div class="tabs" id="tabs"></div>
@@ -61,6 +61,7 @@ details{border:1px solid var(--line);margin:8px 0;padding:8px 12px}summary{curso
   <div class="info" id="info"></div></div>
 </div>
 <div class="f">Passage cartésien ↔ polaire/cylindrique : e<sub>r</sub> = cosθ e<sub>x</sub> + sinθ e<sub>y</sub> &nbsp; e<sub>θ</sub> = −sinθ e<sub>x</sub> + cosθ e<sub>y</sub><br>e<sub>x</sub> = cosθ e<sub>r</sub> − sinθ e<sub>θ</sub> &nbsp; e<sub>y</sub> = sinθ e<sub>r</sub> + cosθ e<sub>θ</sub></div>
+<div class="f">Position : OM = x e<sub>x</sub> + y e<sub>y</sub> + z e<sub>z</sub> (cart.)<br>Cylindre (rayon R, hauteur H) : S<sub>lat</sub> = ∬R dθ dz = 2πRH &nbsp; V = ∭r dr dθ dz = πR²H<br>Sphère (rayon R) : S = ∬R² sinθ dθ dφ = 4πR² &nbsp; angle solide total Ω = 4π &nbsp; V = ∭r² sinθ dr dθ dφ = (4/3)πR³<br>(θ = angle avec Oz, de 0 à π ; φ = azimut, de 0 à 2π)</div>
 </section>
 <div id="rest"></div>
 <p style="text-align:center;color:var(--mute);font:12px 'IBM Plex Mono',monospace">Document généré à partir de vos notes de cours — électromagnétisme, STIC.</p>
@@ -160,8 +161,30 @@ const R=[
 ['formes','Formulaire','<table><tr><th>Grandeur</th><th>Expression</th></tr>'+[['Coulomb','F = (1/4πε₀) q₁q₂ u/r²'],['Champ','E = (1/4πε₀)(q/r²)u ; F = qE'],['Superposition','E = (1/4πε₀) Σ qᵢ PᵢM/PᵢM³'],['Potentiel','V = (1/4πε₀)(q/r) + C ; E = −grad V'],['Circulation','C<sub>AB</sub> = V<sub>A</sub> − V<sub>B</sub> ; rot E = 0'],['Gauss intégral','∯E·dS = Q<sub>int</sub>/ε₀'],['Gauss local','div E = ρ/ε₀ ; ΔV = −ρ/ε₀']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')+'</table>'],
 ['quiz','Auto-test','<p>Réponds dans ta tête, puis ouvre. On prend 1/(4πε₀) = 9·10⁹ SI.</p>'+[['Deux charges de 1 µC séparées de 3 cm : force ?','F = 9·10⁹ × 10⁻¹² / (3·10⁻²)² = 10 N, répulsive.'],['Champ à 30 cm d’une charge de 2 nC ?','E = 9·10⁹ × 2·10⁻⁹ / 0,3² = 200 V/m, vers l’extérieur.'],['Potentiel à la même distance ?','V = 9·10⁹ × 2·10⁻⁹ / 0,3 = 60 V ; E = V/r = 200 V/m ✓'],['Surface fermée contenant 4 nC : flux ?','Φ = Q<sub>int</sub>/ε₀ ≈ 452 V·m, quelle que soit la forme.'],['Charge extérieure à la surface de Gauss : contribue-t-elle au flux ?','Non : ses lignes de champ entrent et ressortent, flux net nul.'],['Pourquoi E = −grad V implique rot E = 0 ?','Car rot(grad f) = 0 pour toute fonction f.'],['div E dans une région sans charge ?','div E = ρ/ε₀ = 0 : aucune source dans cette région.']].map(q=>`<details><summary>${q[0]}</summary>${q[1]}</details>`).join('')]
 ];
-const names={coord:'Coordonnées',grad:'Gradient',circ:'Circulation',flux:'Flux & divergence',theo:'Théorèmes',rot:'Rotationnel',lap:'Laplacien & ∇',estat:'Électrostatique',coulomb:'Coulomb & champ',poten:'Potentiel',gauss:'Gauss',formes:'Formulaire',quiz:'Auto-test'};
-$('#rest').innerHTML=R.map((r,i)=>`<section class="sheet" id="${r[0]}" data-n="FEUILLE ${String(i+2).padStart(2,'0')} / 13"><h2>${r[3]?`<small>${r[3]}</small>`:''}${i+2}. ${r[1]}</h2>${r[2]}</section>`).join('');
+/* ---------- compléments issus des notes ---------- */
+const X={
+grad:fm('Gradient et circulation : si A = grad U, alors A·dl = dU et C<sub>AB</sub> = ∫A·dl = U<sub>B</sub> − U<sub>A</sub> ; si A = −grad U, U est le potentiel scalaire de A.'),
+circ:'<p>Circulation élémentaire : dC = A·dl. Pour que A = (X,Y,Z) dérive d’un potentiel scalaire (A = grad U), il faut X = ∂U/∂x, Y = ∂U/∂y, Z = ∂U/∂z, donc par Schwarz :</p>'+fm('∂X/∂y = ∂Y/∂x &nbsp; ∂Y/∂z = ∂Z/∂y &nbsp; ∂Z/∂x = ∂X/∂z &nbsp;⇔&nbsp; rot A = 0'),
+flux:'<p>Vecteur surface : dS = dS n, avec dS<sub>x</sub> = dy dz, dS<sub>y</sub> = dz dx, dS<sub>z</sub> = dx dy. Flux total d’une surface fermée : Φ = ∯(X dydz + Y dzdx + Z dxdy).</p><details><summary>Preuve : flux sortant du parallélépipède dx dy dz</summary><p>Face ⟂ x en x : dΦ = −X dydz ; en x+dx : dΦ = +(X + ∂X/∂x dx) dydz. Somme : ∂X/∂x dx dy dz.<br>Idem en y : ∂Y/∂y dx dy dz ; en z : ∂Z/∂z dx dy dz.</p>'+fm('dΦ = (∂X/∂x + ∂Y/∂y + ∂Z/∂z) dτ = div A dτ')+'<p>Dans le cas général, le flux sortant d’une surface fermée S est ∯A·dS = ∭ div A dτ (Green-Ostrogradsky).</p></details>',
+theo:'<details><summary>Preuve de Stokes : circulation sur un petit rectangle</summary><p>Contour ⟂ x (côtés dy, dz) : côté PP\' → Y dy ; côté P\'Q\' → (Z + ∂Z/∂y dy) dz ; côté Q\'Q → −(Y + ∂Y/∂z dz) dy ; côté QP → −Z dz.</p>'+fm('dC<sub>⟂x</sub> = (∂Z/∂y − ∂Y/∂z) dy dz')+fm('dC<sub>⟂y</sub> = (∂X/∂z − ∂Z/∂x) dz dx &nbsp; dC<sub>⟂z</sub> = (∂Y/∂x − ∂X/∂y) dx dy')+'<p>Donc dC = rot A · dS, et ∮A·dl = ∬ rot A · dS. Si rot A = 0 : A dérive d’un potentiel (C ne dépend pas du chemin).</p></details>',
+rot:'<details><summary>Preuve de div(rot A) = 0 et rot(grad U) = 0</summary>'+fm('div(rot A) = ∂/∂x(∂Z/∂y − ∂Y/∂z) + ∂/∂y(∂X/∂z − ∂Z/∂x) + ∂/∂z(∂Y/∂x − ∂X/∂y) = 0 (Schwarz)')+fm('rot(grad U) : ∂²U/∂y∂z − ∂²U/∂z∂y = 0, etc.')+'<p>Réciproque : si div B = 0, il existe A₀ tel que B = rot A₀ (champ à flux conservatif). Si A = A₀ + grad U, rot A = rot A₀ + rot(grad U) = B.</p></details>',
+lap:fm('Laplacien vectoriel : (ΔA)<sub>x</sub> = ΔX = ∂²X/∂x² + ∂²X/∂y² + ∂²X/∂z² &nbsp; (ΔA)<sub>y</sub> = ΔY &nbsp; (ΔA)<sub>z</sub> = ΔZ'),
+coulomb:fm('Travail élémentaire : dW = F·dM = qE·dM ; circulation élémentaire : dC = E·dM = E dM cosθ ; pour une charge ponctuelle en A, E·dM = E dr.'),
+poten:fm('C<sub>AB</sub> = (q/4πε₀)∫<sub>A</sub><sup>B</sup> dr/r² = (q/4πε₀)(1/r<sub>A</sub> − 1/r<sub>B</sub>) = V<sub>A</sub> − V<sub>B</sub>')+'<p>Constante C : choisie par V(∞) = 0. V est appelée fonction potentielle ; rot E = rot(grad V) = 0.</p>',
+gauss:'<p>Démonstration locale : dΦ = div E dτ et dΦ = dq/ε₀ = ρ dτ/ε₀ ⇒ div E = ρ/ε₀ (1ʳᵉ équation de Maxwell).</p>'+fm('D = ε₀E : div D = ρ &nbsp; D ne dépend que de la source (charge), E dépend de la source <b>et</b> du milieu (ε).')+fm('Excitation (ρ) → système physique (ε₀, ε) → réponse (E)')+fm('Récapitulatif : E = −grad V ; div E = ρ/ε₀ ⇒ ΔV = −ρ/ε₀ (Poisson) ; Laplace : ΔV = 0 ssi ρ = 0')
+};
+R.forEach(r=>{if(X[r[0]])r[2]+=X[r[0]]});
+const mg=[
+['biot','Biot-Savart et potentiel vecteur','<p>Magnétostatique : étude des effets produits par un courant stationnaire I. Le passage de I dans un circuit crée, par action à distance, une induction magnétique <b>B</b> en tout point M de l’espace.</p>'+fm('μ₀ = 4π·10⁻⁷ H/m (vide) &nbsp; μ = μ₀μ<sub>r</sub> &nbsp; ε₀ = 1/(36π·10⁹) F/m')+'<p>Loi de Biot et Savart : un élément dl du circuit (S) parcouru par I crée en M :</p>'+fm('dB(M) = (μ₀/4π) I dl ∧ u / r² &nbsp;&nbsp; B = ∮<sub>(S)</sub> dB = (μ₀/4π) ∮ I dl ∧ u / r²')+'<p>Il existe un potentiel vecteur A tel que B = rot A, analogue de V en électrostatique :</p>'+fm('A(M) = (μ₀/4π) ∮ I dl / r &nbsp;&nbsp; V(M) = (1/4πε₀) ∫ dq / r'),'Partie III · La magnétostatique'],
+['ampere','Flux de B et théorème d’Ampère','<p>dΦ = B·dS, et div B = 0 : le flux de B à travers toute surface fermée est nul. Il est conservatif : les lignes de champ sont fermées et B est un rotationnel.</p>'+fm('Densité de courant : I = ∬ j·dS, j = I/S (A/m²) &nbsp; I dl = j dτ')+fm('B(M) = (μ₀/4π) ∭ j(P) ∧ PM / PM³ dτ')+'<p>H = champ d’excitation magnétique (A/m), B = μ₀H. Théorème d’Ampère : la circulation de H sur un contour fermé est égale au courant enlacé.</p>'+fm('∮ H·dl = I<sub>enlacé</sub> &nbsp; fil infini : H·2πr = I ⇒ H = I/2πr, B = μ₀I/2πr')+'<p>Forme locale (avec Stokes : ∮H·dl = ∬rot H·dS = ∬j·dS) :</p>'+fm('rot H = j &nbsp;&nbsp; rot B = μ₀ j')]
+];
+R.splice(R.findIndex(r=>r[0]=='formes'),0,...mg);
+const F=R.find(r=>r[0]=='formes');
+F[2]=F[2].replace('</table>',[['Biot-Savart','dB = (μ₀/4π) I dl∧u/r² ; B = rot A'],['Flux de B','div B = 0'],['Ampère','∮H·dl = I<sub>enlacé</sub> ; rot B = μ₀ j']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')+'</table>');
+const Q=R.find(r=>r[0]=='quiz');
+Q[2]+=[['Pourquoi div B = 0 ?','Le flux de B est conservatif : B = rot A et div(rot A) = 0.'],['B à 5 cm d’un fil infini parcouru par 10 A ?','B = μ₀I/2πr = 2·10⁻⁷ × 10 / 0,05 = 4·10⁻⁵ T.'],['Quelle relation lie ∮H·dl et rot H ?','Stokes : ∮H·dl = ∬rot H·dS = ∬j·dS = I, donc rot H = j.']].map(q=>`<details><summary>${q[0]}</summary>${q[1]}</details>`).join('');
+const names={coord:'Coordonnées',grad:'Gradient',circ:'Circulation',flux:'Flux & divergence',theo:'Théorèmes',rot:'Rotationnel',lap:'Laplacien & ∇',estat:'Électrostatique',coulomb:'Coulomb & champ',poten:'Potentiel',gauss:'Gauss',biot:'Biot-Savart',ampere:'Ampère & flux de B',formes:'Formulaire',quiz:'Auto-test'};
+$('#rest').innerHTML=R.map((r,i)=>`<section class="sheet" id="${r[0]}" data-n="FEUILLE ${String(i+2).padStart(2,'0')} / ${R.length+1}"><h2>${r[3]?`<small>${r[3]}</small>`:''}${i+2}. ${r[1]}</h2>${r[2]}</section>`).join('');
 $('#nav').innerHTML=Object.keys(names).map((k,i)=>`<a href="#${k}"><i>${String(i+1).padStart(2,'0')}</i>${names[k]}</a>`).join('');
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+e.target.id))}),{rootMargin:'-20% 0px -70% 0px'});
 document.querySelectorAll('.sheet').forEach(s=>io.observe(s));
